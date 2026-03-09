@@ -1,0 +1,14 @@
+# Python
+tracker/__pycache__/
+tracker/*.py[cod]
+tracker/.venv/
+
+# Node
+node_modules/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
