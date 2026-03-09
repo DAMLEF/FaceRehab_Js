@@ -110,9 +110,15 @@ const faceMapping = await response.json();
 
 console.log(faceMapping);
 
-
-function faceSync(faceData){
-
+/**
+ * La fonction permet d'altérer les détails morphologiques du visage selon le standard ARKIT.
+ * Il est possible de symétriser une partie du visage.
+ * @param {Object<string, number>} faceData Donne toutes les valeurs morphologiques du visage selon le standard ARKIT
+ * @param {boolean} needSymmetry Booléen qui demande s'il est nécessaire de symétriser le visage
+ * @param {boolean} symmetricSide Si ce paramètre est à false alors, on considère que le côté gauche du visage est le modèle
+ * et si le paramètre est à true, il s'agit du côté droit que l'on prend comme modèle
+ **/
+function faceSync(faceData, needSymmetry = false, symmetricSide = false){
 
     for(let key in faceData){
         if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty(key)){
@@ -123,9 +129,10 @@ function faceSync(faceData){
     if(faceData.hasOwnProperty("headYaw") && faceData.hasOwnProperty("headRoll") && faceData.hasOwnProperty("headPitch")){
 
         // Appliquer directement la rotation à la tête du personnage
-        headGroup.rotation.y = faceData.headYaw;   // Yaw
-        headGroup.rotation.x = faceData.headPitch; // Pitch
-        headGroup.rotation.z = faceData.headRoll;  // Roll
+
+        //headGroup.rotation.y = faceData.headYaw;   // Yaw
+        //headGroup.rotation.x = faceData.headPitch; // Pitch
+        //headGroup.rotation.z = faceData.headRoll;  // Roll
     }
 
 }
