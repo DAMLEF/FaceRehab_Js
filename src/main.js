@@ -73,6 +73,7 @@ document.addEventListener('mousemove', e => {
 
 let meshDictionary = {};
 let faceMesh = null;
+let latestFaceValues = {}; // Stocke les dernières valeurs reçues via WebSocket
 loader.load("model.fbx",(fbx)=>{
     scene.add(fbx)
     fbx.position.set(0,0,0)
@@ -108,7 +109,7 @@ function faceSync(faceData){
 
 
     for(let key in faceData){
-        if(faceData.hasOwnProperty(key)){
+        if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty(key)){
             faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
         }
     }
@@ -116,6 +117,26 @@ function faceSync(faceData){
 }
 
 
+
+// 1️⃣ Connexion WebSocket
+const ws = new WebSocket('ws://localhost:8080');
+
+ws.onopen = () => {
+    console.log('WebSocket connecté');
+};
+
+
+ws.onmessage = (event) => {
+    try {
+        const data = JSON.parse(event.data);
+        // On met juste à jour l'état, on n'applique pas directement
+        latestFaceValues = data;
+    } catch (e) {
+        console.error('Erreur JSON WebSocket', e);
+    }
+};
+
+ws.onclose = () => console.log('WebSocket fermé');
 
 // Debug element
 const debug = document.getElementById('debug');
@@ -146,7 +167,7 @@ function animate(){
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
     // Test expressions FBX
-    faceSync({"mouthLeft": 0.8, "mouthSmileRight": 0.8})
+    faceSync(latestFaceValues)
 
     renderer.render(scene,camera)
 }
