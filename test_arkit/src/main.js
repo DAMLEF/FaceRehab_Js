@@ -109,7 +109,7 @@ function faceSync(faceData){
 
 
     for(let key in faceData){
-        if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty.call(key)){
+        if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty(key)){
             faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
         }
     }
