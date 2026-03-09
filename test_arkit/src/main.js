@@ -114,6 +114,14 @@ function faceSync(faceData){
         }
     }
 
+    if(faceData.hasOwnProperty("headYaw") && faceData.hasOwnProperty("headRoll") && faceData.hasOwnProperty("headPitch")){
+
+        // Appliquer directement la rotation à la tête du personnage
+        faceMesh.rotation.y = faceData.headYaw;   // Yaw
+        faceMesh.rotation.x = faceData.headPitch; // Pitch
+        faceMesh.rotation.z = faceData.headRoll;  // Roll
+    }
+
 }
 
 
