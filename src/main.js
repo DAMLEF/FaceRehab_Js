@@ -69,12 +69,11 @@ document.addEventListener('mousemove', e => {
     prevMouse.y = e.clientY;
 });
 
-
-
 let meshDictionary = {};
 let faceMesh = null;
 let latestFaceValues = {}; // Stocke les dernières valeurs reçues via WebSocket
 loader.load("model.fbx",(fbx)=>{
+    
     scene.add(fbx)
     fbx.position.set(0,0,0)
     fbx.scale.set(0.01,0.01,0.01)  // réduire si le modèle est énorme
@@ -83,6 +82,10 @@ loader.load("model.fbx",(fbx)=>{
         console.log(child.type, child.name);
         if(child.isMesh || child.isSkinnedMesh){
             console.log("Found mesh:", child.name);
+            child.material = child.material.clone();
+            child.material.color.set(0xd5c29e);
+            child.material.map = null;
+            child.material.needsUpdate = true;
             if(child.morphTargetInfluences){
                 console.log("Morph targets:", child.morphTargetDictionary);
 
@@ -93,7 +96,7 @@ loader.load("model.fbx",(fbx)=>{
             }
         }
     });
-
+    
 
 })
 
@@ -105,21 +108,62 @@ const faceMapping = await response.json();
 console.log(faceMapping);
 
 
-function faceSync(faceData){
 
+/**
+ * La fonction permet d'altérer les détails morphologiques du visage selon le standard ARKIT.
+ * Il est possible de symétriser une partie du visage.
+ * @param {Object<string, number>} faceData Donne toutes les valeurs morphologiques du visage selon le standard ARKIT
+ * @param {boolean} needSymmetry Booléen qui demande s'il est nécessaire de symétriser le visage
+ * @param {boolean} symmetricSide Si ce paramètre est à false alors, on considère que le côté gauche du visage est le modèle
+ * et si le paramètre est à true, il s'agit du côté droit que l'on prend comme modèle
+ **/
+function faceSync(faceData, needSymmetry = false, symmetricSide = false){
 
     for(let key in faceData){
         if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty(key)){
-            faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
+
+            //console.log("VISAGE DATA : " + key + " " + faceData[key]);
+
+
+            if(needSymmetry && faceMapping[key].symmetry){
+
+                let validSymmetry = false;
+
+                if(symmetricSide && key.includes("Right")){
+                    validSymmetry = true;
+                }
+                else if(!symmetricSide && key.includes("Left")){
+                    validSymmetry = true;
+                }
+
+                if(validSymmetry){
+                    // On applique la valeur à l'élément courant du visage et son symétrique
+
+                    console.log(key)
+                    console.log(faceMapping[key].linkSymmetry)
+
+                    faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
+
+                    faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[faceMapping[key].linkSymmetry]] = faceData[key];
+                }
+
+            }
+            else{
+                // On applique la valeur à l'élément courant du visage
+                faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
+
+            }
+
         }
     }
 
     if(faceData.hasOwnProperty("headYaw") && faceData.hasOwnProperty("headRoll") && faceData.hasOwnProperty("headPitch")){
 
         // Appliquer directement la rotation à la tête du personnage
-        faceMesh.rotation.y = faceData.headYaw;   // Yaw
-        faceMesh.rotation.x = faceData.headPitch; // Pitch
-        faceMesh.rotation.z = faceData.headRoll;  // Roll
+
+        //headGroup.rotation.y = faceData.headYaw;   // Yaw
+        //headGroup.rotation.x = faceData.headPitch; // Pitch
+        //headGroup.rotation.z = faceData.headRoll;  // Roll
     }
 
 }
@@ -175,7 +219,16 @@ function animate(){
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
     // Test expressions FBX
-    faceSync(latestFaceValues)
+
+    if(keys['h']){
+        //faceSync({"mouthDimpleLeft": 0.8}, true, false)
+        faceSync(latestFaceValues, true, false)
+    }
+    else{
+        //faceSync({"mouthDimpleLeft": 0.01, "mouthDimpleRight" : 0.999}, false, false)
+        faceSync(latestFaceValues)
+    }
+
 
     renderer.render(scene,camera)
 }
