@@ -110,6 +110,8 @@ const faceMapping = await response.json();
 
 console.log(faceMapping);
 
+
+
 /**
  * La fonction permet d'altérer les détails morphologiques du visage selon le standard ARKIT.
  * Il est possible de symétriser une partie du visage.
@@ -122,7 +124,39 @@ function faceSync(faceData, needSymmetry = false, symmetricSide = false){
 
     for(let key in faceData){
         if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty(key)){
-            faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
+
+            //console.log("VISAGE DATA : " + key + " " + faceData[key]);
+
+
+            if(needSymmetry && faceMapping[key].symmetry){
+
+                let validSymmetry = false;
+
+                if(symmetricSide && key.includes("Right")){
+                    validSymmetry = true;
+                }
+                else if(!symmetricSide && key.includes("Left")){
+                    validSymmetry = true;
+                }
+
+                if(validSymmetry){
+                    // On applique la valeur à l'élément courant du visage et son symétrique
+
+                    console.log(key)
+                    console.log(faceMapping[key].linkSymmetry)
+
+                    faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
+
+                    faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[faceMapping[key].linkSymmetry]] = faceData[key];
+                }
+
+            }
+            else{
+                // On applique la valeur à l'élément courant du visage
+                faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
+
+            }
+
         }
     }
 
@@ -188,7 +222,16 @@ function animate(){
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
     // Test expressions FBX
-    faceSync(latestFaceValues)
+
+    if(keys['h']){
+        //faceSync({"mouthDimpleLeft": 0.8}, true, false)
+        faceSync(latestFaceValues, true, false)
+    }
+    else{
+        //faceSync({"mouthDimpleLeft": 0.01, "mouthDimpleRight" : 0.999}, false, false)
+        faceSync(latestFaceValues)
+    }
+
 
     renderer.render(scene,camera)
 }
