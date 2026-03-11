@@ -73,7 +73,6 @@ document.addEventListener('mousemove', e => {
 
 let meshDictionary = {};
 let faceMesh = null;
-let headGroup = null;
 let latestFaceValues = {}; // Stocke les dernières valeurs reçues via WebSocket
 loader.load("model.fbx",(fbx)=>{
     scene.add(fbx)
@@ -82,11 +81,6 @@ loader.load("model.fbx",(fbx)=>{
 
     fbx.traverse(child => {
         console.log(child.type, child.name);
-
-        if(child.name === "grp_head"){
-            headGroup = child;
-        }
-
         if(child.isMesh || child.isSkinnedMesh){
             console.log("Found mesh:", child.name);
             if(child.morphTargetInfluences){
@@ -123,9 +117,9 @@ function faceSync(faceData){
     if(faceData.hasOwnProperty("headYaw") && faceData.hasOwnProperty("headRoll") && faceData.hasOwnProperty("headPitch")){
 
         // Appliquer directement la rotation à la tête du personnage
-        headGroup.rotation.y = faceData.headYaw;   // Yaw
-        headGroup.rotation.x = faceData.headPitch; // Pitch
-        headGroup.rotation.z = faceData.headRoll;  // Roll
+        faceMesh.rotation.y = faceData.headYaw;   // Yaw
+        faceMesh.rotation.x = faceData.headPitch; // Pitch
+        faceMesh.rotation.z = faceData.headRoll;  // Roll
     }
 
 }
