@@ -81,11 +81,14 @@ loader.load("model.fbx",(fbx)=>{
     fbx.traverse(child => {
         console.log(child.type, child.name);
         if(child.isMesh || child.isSkinnedMesh){
+
             console.log("Found mesh:", child.name);
+
             child.material = child.material.clone();
             child.material.color.set(0xd5c29e);
             child.material.map = null;
             child.material.needsUpdate = true;
+
             if(child.morphTargetInfluences){
                 console.log("Morph targets:", child.morphTargetDictionary);
 
