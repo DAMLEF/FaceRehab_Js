@@ -1,0 +1,15 @@
+.symmetrySlider {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*.symmetrySlider input[type="range"] {
+    appearance: none;
+    width: 200px;
+    height: 6px;
+    background: #ccc;
+    border-radius: 4px;
+}
+

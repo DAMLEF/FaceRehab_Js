@@ -16,8 +16,11 @@ from camera import open_camera, get_camera_matrix
 from face   import get_face_pose, draw_debug_axes
 
 # ── Caméra ───────────────────────────────────────────────────────────────────
+
 cap, W, H            = open_camera(index=0)
 cam_matrix, dist_coeffs = get_camera_matrix(W, H)
+
+
 
 # ── Données partagées avec le serveur WebSocket ───────────────────────────────
 face_data = {}
@@ -57,6 +60,8 @@ options = FaceLandmarkerOptions(
 )
 
 landmarker = FaceLandmarker.create_from_options(options)
+
+
 
 # Adaptateur pour rendre les landmarks compatibles avec face.py
 class LM:
@@ -128,6 +133,9 @@ while cap.isOpened():
     key = cv2.waitKey(1)
     if key % 256 == 27:   # ESC
         break
+
+
+print("cc4")
 
 landmarker.close()
 cap.release()

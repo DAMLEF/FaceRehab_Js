@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,19 +9,21 @@
         body { margin:0; overflow:hidden; }
         #debug { position:absolute; top:0; left:0; color:white; background:rgba(0,0,0,0.5); padding:5px; font-family:monospace; }
     </style>
+
+    <link rel="stylesheet" href="src/styles/symmetrySlider.css">
 </head>
+
 <body>
 <div id="debug">Camera: </div>
 
-
-<div class="symmetrySlider">
-    <button>LEFT</button>
-    <button>   </button>
-    <button>RIGHT</button>
-
+<div id="symSliders">
 </div>
 
-<!--<script type="module" src="src/main.js"></script> -->
+
+
+<script type="module" src="src/ui/symmetrySlider.js"></script>
+
+<!--<script type="module" src="src/main.js"></script>-->
 
 </body>
 </html>

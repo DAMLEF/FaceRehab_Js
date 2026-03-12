@@ -72,7 +72,7 @@ document.addEventListener('mousemove', e => {
 let meshDictionary = {};
 let faceMesh = null;
 let latestFaceValues = {}; // Stocke les dernières valeurs reçues via WebSocket
-loader.load("model.fbx",(fbx)=>{
+loader.load("assets/models/model.fbx",(fbx)=>{
     
     scene.add(fbx)
     fbx.position.set(0,0,0)
@@ -104,7 +104,7 @@ loader.load("model.fbx",(fbx)=>{
 })
 
 
-const response = await fetch('faceMapping.json');
+const response = await fetch('src/config/faceMapping.json');
 const faceMapping = await response.json();
 
 
