@@ -1,0 +1,29 @@
+{
+  "eyeBlink": ["eyeBlinkLeft", "eyeBlinkRight"],
+  "eyeLookDown": ["eyeLookDownLeft", "eyeLookDownRight"],
+  "eyeLookIn": ["eyeLookInLeft", "eyeLookInRight"],
+  "eyeLookOut": ["eyeLookOutLeft", "eyeLookOutRight"],
+  "eyeLookUp": ["eyeLookUpLeft", "eyeLookUpRight"],
+  "eyeSquint": ["eyeSquintLeft", "eyeSquintRight"],
+  "eyeWide": ["eyeWideLeft", "eyeWideRight"],
+
+  "browDown": ["browDownLeft", "browDownRight"],
+  "browInnerUp": ["browInnerUpLeft", "browInnerUpRight"],
+  "browOuterUp": ["browOuterUpLeft", "browOuterUpRight"],
+
+  "cheekPuff": ["cheekPuffLeft", "cheekPuffRight"],
+  "cheekSquint": ["cheekSquintLeft", "cheekSquintRight"],
+
+  "jaw": ["jawRight", "jawLeft"],
+
+  "mouth": ["mouthLeft", "mouthRight"],
+  "mouthFrown": ["mouthFrownLeft", "mouthFrownRight"],
+  "mouthSmile": ["mouthSmileLeft", "mouthSmileRight"],
+  "mouthDimple": ["mouthDimpleLeft", "mouthDimpleRight"],
+  "mouthStretch": ["mouthStretchLeft", "mouthStretchRight"],
+  "mouthPress": ["mouthPressLeft", "mouthPressRight"],
+  "mouthLowerDown": ["mouthLowerDownLeft", "mouthLowerDownRight"],
+  "mouthUpperUp": ["mouthUpperUpLeft", "mouthUpperUpRight"],
+
+  "noseSneer": ["noseSneerLeft", "noseSneerRight"]
+}

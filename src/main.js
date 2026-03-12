@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js'
 
+// Module interne au projet
+import { allSymSliders } from "./ui/symmetrySlider";
 
 
 const scene = new THREE.Scene()
@@ -111,50 +113,72 @@ const faceMapping = await response.json();
 console.log(faceMapping);
 
 
+function getBlendshapeCore(name) {
+
+    if (name.endsWith('Left')) {
+        return name.slice(0, -4); // enlève "Left"
+    } else if (name.endsWith('Right')) {
+        return name.slice(0, -5); // enlève "Right"
+    } else {
+        return name; // pas de Left/Right
+    }
+
+}
 
 /**
  * La fonction permet d'altérer les détails morphologiques du visage selon le standard ARKIT.
  * Il est possible de symétriser une partie du visage.
  * @param {Object<string, number>} faceData Donne toutes les valeurs morphologiques du visage selon le standard ARKIT
- * @param {boolean} needSymmetry Booléen qui demande s'il est nécessaire de symétriser le visage
- * @param {boolean} symmetricSide Si ce paramètre est à false alors, on considère que le côté gauche du visage est le modèle
- * et si le paramètre est à true, il s'agit du côté droit que l'on prend comme modèle
+ * @param {Object<string, number>} symmetricData Dictionnaire qui associe à chaque blendshapes symétrisasse de l'ARKIT
+ * une valeur qui indique s'il est nécessaire de faire une symétrie. 0 = Neutre, -1 = On symétrise à partir de la partie
+ * gauche du visage, 1 = On symétrise à partir de la partie droite du visage
  **/
-function faceSync(faceData, needSymmetry = false, symmetricSide = false){
+function faceSync(faceData, symmetricData = {}){
+
+    let finalState = {}
 
     for(let key in faceData){
+
+        // Indique s'il est nécessaire d'appliquer la valeur courante du visage au modèle
+        let standardKeyApplication = true;
+        let validSymmetry = false;
+
+
         if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty(key)){
 
-            //console.log("VISAGE DATA : " + key + " " + faceData[key]);
+            if(symmetricData !== {}){
+                // Si la table des symétries est non vide alors on se prépare à symétriser des éléments
+
+                if(key.includes("Left") || key.includes("Right")){
+                    // Nous sommes face à un élément qui a un symétrique
+                    const baseBSName = getBlendshapeCore(key);
+
+                    if(symmetricData[baseBSName] !== 0 && symmetricData[baseBSName] !== undefined){
+                        if(symmetricData[baseBSName] === 1 && key.includes("Right")){
+                            validSymmetry = true;
+                        }
+                        else if(symmetricData[baseBSName] === -1 && key.includes("Left")){
+                            validSymmetry = true;
+                        }
+                        else{
+                            standardKeyApplication = false;
+                        }
+                    }
 
 
-            if(needSymmetry && faceMapping[key].symmetry){
-
-                let validSymmetry = false;
-
-                if(symmetricSide && key.includes("Right")){
-                    validSymmetry = true;
                 }
-                else if(!symmetricSide && key.includes("Left")){
-                    validSymmetry = true;
-                }
-
-                if(validSymmetry){
-                    // On applique la valeur à l'élément courant du visage et son symétrique
-
-                    console.log(key)
-                    console.log(faceMapping[key].linkSymmetry)
-
-                    faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
-
-                    faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[faceMapping[key].linkSymmetry]] = faceData[key];
-                }
-
             }
-            else{
+
+            if(standardKeyApplication){
                 // On applique la valeur à l'élément courant du visage
+                finalState[key] = faceData[key]
                 faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
 
+
+                if(validSymmetry){
+                    // On applique la valeur à l'élément symétrique du visage
+                    faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[faceMapping[key].linkSymmetry]] = faceData[key];
+                }
             }
 
         }
@@ -222,15 +246,7 @@ function animate(){
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
     // Test expressions FBX
-
-    if(keys['h']){
-        //faceSync({"mouthDimpleLeft": 0.8}, true, false)
-        faceSync(latestFaceValues, true, false)
-    }
-    else{
-        //faceSync({"mouthDimpleLeft": 0.01, "mouthDimpleRight" : 0.999}, false, false)
-        faceSync(latestFaceValues)
-    }
+    faceSync(latestFaceValues, allSymSliders);
 
 
     renderer.render(scene,camera)

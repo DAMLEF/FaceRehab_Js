@@ -1,15 +1,26 @@
+#symSliders{
+    position: fixed;       /* fixe la div sur l’écran */
+
+    overflow-y: auto;    /* scroll vertical si le contenu dépasse */
+    overflow-x: hidden;  /* empêche le scroll horizontal */
+
+    height: 100vh;        /* hauteur = hauteur de la fenêtre */
+    width: 20%;
+
+    left: 80vw;
+
+    color:white;
+    background:rgba(0,0,0,0.5);
+    padding:5px;
+    font-family:monospace;
+
+}
+
 .symmetrySlider {
 
     display: flex;
     flex-direction: column;
     align-items: center;
-}
 
-/*.symmetrySlider input[type="range"] {
-    appearance: none;
-    width: 200px;
-    height: 6px;
-    background: #ccc;
-    border-radius: 4px;
+    margin-bottom: 30px;
 }
-

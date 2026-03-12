@@ -49,6 +49,6 @@
   "tongueOut": { "source": null, "realId": 47, "name": "tongueOut", "symmetry": false, "linkSymmetry": null },
   "eyeWideLeft": { "source": null, "realId": 48, "name": "eyeWideLeft", "symmetry": true, "linkSymmetry": "eyeWideRight" },
   "eyeWideRight": { "source": null, "realId": 49, "name": "eyeWideRight", "symmetry": true, "linkSymmetry": "eyeWideLeft" },
-  "cheekSquintLeft2": { "source": null, "realId": 50, "name": "cheekSquintLeft", "symmetry": true, "linkSymmetry": "cheekSquintRight2" },
-  "cheekSquintRight2": { "source": null, "realId": 51, "name": "cheekSquintRight", "symmetry": true, "linkSymmetry": "cheekSquintLeft2" }
+  "cheekSquintLeft2": { "source": null, "realId": 50, "name": "cheekSquintLeft2", "symmetry": true, "linkSymmetry": "cheekSquintRight2" },
+  "cheekSquintRight2": { "source": null, "realId": 51, "name": "cheekSquintRight2", "symmetry": true, "linkSymmetry": "cheekSquintLeft2" }
 }
