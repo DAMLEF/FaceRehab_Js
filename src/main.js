@@ -12,7 +12,7 @@ scene.background = new THREE.Color(0x0000ff);
 
 
 const camera = new THREE.PerspectiveCamera(70,innerWidth/innerHeight,0.1,100)
-camera.position.set(0, 1.5, 1.5)
+camera.position.set(0, 1.55, 0.5)
 
 
 const light = new THREE.DirectionalLight(0xffffff, 1)
@@ -146,7 +146,7 @@ function faceSync(faceData, symmetricData = {}){
 
         if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty(key)){
 
-            if(symmetricData !== {}){
+            if(true){
                 // Si la table des symétries est non vide alors on se prépare à symétriser des éléments
 
                 if(key.includes("Left") || key.includes("Right")){
@@ -229,16 +229,18 @@ function animate(){
     requestAnimationFrame(animate)
 
     velocity.set(0, 0, 0);
-    const speed = 0.04
+    const speed = 0.01
 
     if(keys['z']) velocity.z -= speed;
     if(keys['s']) velocity.z += speed;
     if(keys['q']) velocity.x -= speed;
     if(keys['d']) velocity.x += speed;
+    if(keys[' ']) velocity.y += speed;
+    if(keys['a']) velocity.y -= speed; 
 
     // Appliquer le mouvement en respectant la rotation
     camera.translateX(velocity.x);
-    camera.translateY(velocity.y);
+    camera.position.y += velocity.y;
     camera.translateZ(velocity.z);
 
 

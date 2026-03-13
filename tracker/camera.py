@@ -1,9 +1,16 @@
 import cv2
+import platform
 import numpy as np
 
 
 def open_camera(index=0):
-    cap = cv2.VideoCapture(index, cv2.CAP_DSHOW)
+    system = platform.system()
+    
+    if system == "Windows":
+        cap = cv2.VideoCapture(index, cv2.CAP_DSHOW)
+    else:
+        cap = cv2.VideoCapture(index)
+    
     if not cap.isOpened():
         raise RuntimeError(f"Cannot open camera at index {index}")
     
