@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js'
+
 
 // Module interne au projet
-import { allSymSliders } from "./ui/symmetrySlider";
+import { allSymSlidersValues } from "./ui/symmetrySlider";
 
 
 const scene = new THREE.Scene()
@@ -77,17 +77,17 @@ let latestFaceValues = {}; // Stocke les dernières valeurs reçues via WebSocke
 loader.load("assets/models/model.fbx",(fbx)=>{
     const baseColor   = textureLoader.load("assets/textures/head_base.png");
     baseColor.colorSpace = THREE.SRGBColorSpace; 
-
+    
     scene.add(fbx)
     fbx.position.set(0,0,0)
     fbx.scale.set(0.01,0.01,0.01)  // réduire si le modèle est énorme
-
+    
     fbx.traverse(child => {
         console.log(child.type, child.name);
         if(child.isMesh || child.isSkinnedMesh){
-
+            
             console.log("Found mesh:", child.name);
-
+            
             if(child.name === "head_lod0_ORIGINAL"){
                 child.material = new THREE.MeshStandardMaterial({
                     map:          baseColor,
@@ -99,7 +99,7 @@ loader.load("assets/models/model.fbx",(fbx)=>{
 
             if(child.name === "teeth_ORIGINAL"){
                 child.material = new THREE.MeshStandardMaterial({
-                    color:     0xdddddd,
+                    color:     0xaaaaaa,
                     roughness:    0.6,
                     metalness:    0.0,
                 });
@@ -265,7 +265,7 @@ function animate(){
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
     // Test expressions FBX
-    faceSync(latestFaceValues, allSymSliders);
+    faceSync(latestFaceValues, allSymSlidersValues);
 
 
     renderer.render(scene,camera)

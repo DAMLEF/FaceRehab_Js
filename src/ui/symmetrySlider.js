@@ -1,49 +1,109 @@
-import symmetricBlendshapes from '/src/config/symmetricBlendshapes.json' assert { type: 'json' };
+import symmetricBlendshapes from '/src/config/symmetricBlendshapes.json' with { type: 'json' };
+import { getHTMLTemplate } from "../utils/getHTMLTemplate";
 
-const templateHTML = await fetch("src/templates/symmetrySlider.html").then(r => r.text());
+const symSliderTemplateHTML = await fetch("src/templates/symmetrySlider.html").then(r => r.text());
+const symSliderControlTemplateHTML = await fetch("src/templates/symmetrySliderControl.html").then(r => r.text());
+
 
 const symSlidersDivId = "symSliders";
 
-export let allSymSliders = {}
+const symSlidersControlsDivId = "symSlidersControls";
 
-function createSlider(name) {
-    // Récupération du template depuis le raw Text
-    const div = document.createElement("div");
-    div.innerHTML = templateHTML;
+export let allSymSlidersValues = {}
+let allSymSliders = {}
 
+let allSymSlidersControls = {}
+
+// Création des Sliders
+function createSymSlider(name) {
     // Rangement de la div dans la variable slider
-    const slider = div.children[1];
+    const slider = getHTMLTemplate(symSliderTemplateHTML);
 
     // On change le nom du slider
     const sliderParamP = slider.children[0];
     sliderParamP.innerText = name;
 
-    // On modifie la
 
     // On ajoute le slider sur la page et on garde en mémoire le résultat du paramètre
     document.getElementById(symSlidersDivId).appendChild(slider);
-    allSymSliders[name] = 0;
+    allSymSlidersValues[name] = 0;
 
-    // On ajoute un listener qui met à jour le paramètre dans le tableau
+    // On ajoute un listener sur l'input qui met à jour le paramètre dans le tableau
     const inputDiv = slider.children[1];
     const sliderInput = inputDiv.children[1];
 
     sliderInput.addEventListener('input', () => {
-        allSymSliders[name] = parseInt(sliderInput.value);
+        allSymSlidersValues[name] = parseInt(sliderInput.value);
     })
+
+    // On stocke tous les Inputs dans un tableau pour agir dessus par la suite
+    allSymSliders[name] = sliderInput;
 }
 
-export function initSymSlider(){
+// Création des Boutons de contrôle sur tous les sliders en même temps
+function createSymSliderControl(name){
+    const button = getHTMLTemplate(symSliderControlTemplateHTML);
+
+    button.innerText = name;
+
+    document.getElementById(symSlidersControlsDivId).appendChild(button);
+
+    allSymSlidersControls[name] = button;
+
+    return button;
+}
+
+// Initialisation des sliders à partir des BS qui ont une symétrie
+function initSymSlider(){
     for(const baseBS in symmetricBlendshapes){
-        createSlider(baseBS);
+        createSymSlider(baseBS);
     }
 }
 
+function initSymSlidersControls(){
+    const leftButton = createSymSliderControl("LEFT");
+    leftButton.addEventListener("click", () => {
+        setSymSlidersToLeft();
+    })
+
+    const defaultButton = createSymSliderControl("DEFAULT");
+    defaultButton.addEventListener("click", () => {
+        setSymSlidersToDefault();
+    })
+
+    const rightButton = createSymSliderControl("RIGHT");
+    rightButton.addEventListener("click", () => {
+        setSymSlidersToRight();
+    })
+}
+
+// Fonction utilitaire pour modifier rapidement tous les sliders
+function setSymSlidersValue(value = 0){
+    for (const baseBS in allSymSlidersValues){
+        allSymSlidersValues[baseBS] = value;
+        allSymSliders[baseBS].value = value.toString();
+    }
+}
+
+export function setSymSlidersToLeft(){
+    setSymSlidersValue(-1);
+}
+
+export function setSymSlidersToRight(){
+    setSymSlidersValue(1);
+}
+
+export function setSymSlidersToDefault(){
+    setSymSlidersValue(0);
+}
+
+// ----------------------------------------------------------------
+
+// Initialisation à la fin du programme
 initSymSlider();
+initSymSlidersControls();
 
 // Debug pour la variable globale des sliders
 // document.addEventListener('keydown', () => {
 //    console.log(allSymSliders)
 // })
-
-// Gestion des Sliders
