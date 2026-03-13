@@ -146,7 +146,7 @@ function faceSync(faceData, symmetricData = {}){
 
         if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty(key)){
 
-            if(symmetricData !== {}){
+            if(true){
                 // Si la table des symétries est non vide alors on se prépare à symétriser des éléments
 
                 if(key.includes("Left") || key.includes("Right")){
