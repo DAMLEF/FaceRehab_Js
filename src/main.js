@@ -9,18 +9,18 @@ import { allSymSlidersValues } from "./ui/symmetrySlider";
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x0000ff);
 
-
+const textureLoader = new THREE.TextureLoader();
 
 const camera = new THREE.PerspectiveCamera(70,innerWidth/innerHeight,0.1,100)
 camera.position.set(0, 1.55, 0.5)
 
 
-const light = new THREE.DirectionalLight(0xffffff, 1)
-light.position.set(5,5,5)
-scene.add(light)
+const dirLight = new THREE.DirectionalLight(0xffffff, 3.0);
+dirLight.position.set(1, 2, 2);
+scene.add(dirLight);
 
-const ambient = new THREE.AmbientLight(0x404040, 1)
-scene.add(ambient)
+const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambientLight);
 
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(innerWidth,innerHeight)
@@ -75,20 +75,37 @@ let meshDictionary = {};
 let faceMesh = null;
 let latestFaceValues = {}; // Stocke les dernières valeurs reçues via WebSocket
 loader.load("assets/models/model.fbx",(fbx)=>{
+    const baseColor   = textureLoader.load("assets/textures/head_base.png");
+    baseColor.colorSpace = THREE.SRGBColorSpace; 
     
     scene.add(fbx)
     fbx.position.set(0,0,0)
     fbx.scale.set(0.01,0.01,0.01)  // réduire si le modèle est énorme
-
+    
     fbx.traverse(child => {
         console.log(child.type, child.name);
         if(child.isMesh || child.isSkinnedMesh){
-
+            
             console.log("Found mesh:", child.name);
+            
+            if(child.name === "head_lod0_ORIGINAL"){
+                child.material = new THREE.MeshStandardMaterial({
+                    map:          baseColor,
+                    color:     0xffffff,
+                    roughness:    0.6,
+                    metalness:    0.0,
+                });
+            }
 
-            child.material = child.material.clone();
-            child.material.color.set(0xd5c29e);
-            child.material.map = null;
+            if(child.name === "teeth_ORIGINAL"){
+                child.material = new THREE.MeshStandardMaterial({
+                    color:     0xaaaaaa,
+                    roughness:    0.6,
+                    metalness:    0.0,
+                });
+            }
+
+            
             child.material.needsUpdate = true;
 
             if(child.morphTargetInfluences){
