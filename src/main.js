@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js'
+
 
 // Module interne au projet
-import { allSymSliders } from "./ui/symmetrySlider";
+import { allSymSlidersValues } from "./ui/symmetrySlider";
 
 
 const scene = new THREE.Scene()
@@ -246,7 +246,7 @@ function animate(){
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
     // Test expressions FBX
-    faceSync(latestFaceValues, allSymSliders);
+    faceSync(latestFaceValues, allSymSlidersValues);
 
 
     renderer.render(scene,camera)
