@@ -240,7 +240,7 @@ function animate(){
 
     // Appliquer le mouvement en respectant la rotation
     camera.translateX(velocity.x);
-    camera.position.y += velocity.y;
+    camera.translateY(velocity.y);
     camera.translateZ(velocity.z);
 
 
