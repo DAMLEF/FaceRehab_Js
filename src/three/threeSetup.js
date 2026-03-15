@@ -21,5 +21,20 @@ export function setupThree(){
     renderer.setSize(innerWidth,innerHeight)
     document.body.appendChild(renderer.domElement)
 
+    // Resize de la fenêtre en temps réel
+    window.addEventListener("resize", () => {onWindowResize(camera, renderer)});
+
     return {scene, camera, renderer}
+}
+
+function onWindowResize(camera, renderer) {
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(width, height);
+
 }

@@ -17,16 +17,31 @@ const faceMapping = await response.json();
 /**
  * La fonction permet d'altérer les détails morphologiques du visage selon le standard ARKIT.
  * Il est possible de symétriser une partie du visage.
- * @param faceMesh Mesh Three.JS du modèle de visage compatible ARKIT
+ *
+ * @param faceProfile Profil d'un modèle de visage FBX Three.Js compatible avec l'ARKIT
+ * Le profil de visage contient les mesh du visage, de la mâchoire, de l'œil droit et gauche ainsi qu'un accès au modèle
+ * complet
+ *
  * @param {Object<string, number>} faceData Donne toutes les valeurs morphologiques du visage selon le standard ARKIT
  * @param {Object<string, number>} symmetricData Dictionnaire qui associe à chaque blendshapes symétrisasse de l'ARKIT
  * une valeur qui indique s'il est nécessaire de faire une symétrie. 0 = Neutre, -1 = On symétrise à partir de la partie
  * gauche du visage, 1 = On symétrise à partir de la partie droite du visage
  **/
-export function faceSync(faceMesh, faceData, symmetricData = {}){
+export function faceSync(faceProfile, faceData, symmetricData = {}){
 
     let finalState = {}
 
+    // Récupération des mesh du profil
+    let faceMesh = faceProfile.head;
+
+    let jawMesh = faceProfile.jaw;
+
+    let rightEye = faceProfile.rightEye;
+
+    let leftEye = faceProfile.leftEye;
+
+
+    // On attribue ensuite les valeurs dans un premier temps au visage en priorité en suivant les éventuelles symétries
     for(let key in faceData){
 
         // Indique s'il est nécessaire d'appliquer la valeur courante du visage au modèle
@@ -74,9 +89,31 @@ export function faceSync(faceMesh, faceData, symmetricData = {}){
         }
     }
 
+
+    // Puis, on applique rétroactivement aux autres mesh les valeurs du visage (car elle hérite des valeurs du visage).
+    if(jawMesh !== undefined){
+        for(let key in jawMesh.morphTargetDictionary){
+            jawMesh.morphTargetDictionary[key] = faceMesh.morphTargetDictionary[key];
+        }
+    }
+
+    if(rightEye !== undefined){
+        for(let key in rightEye){
+            rightEye.morphTargetDictionary[key] = faceMesh.morphTargetDictionary[key];
+        }
+    }
+
+    if(leftEye !== undefined){
+        for(let key in leftEye){
+            leftEye.morphTargetDictionary[key] = faceMesh.morphTargetDictionary[key];
+        }
+    }
+
     if(faceData.hasOwnProperty("headYaw") && faceData.hasOwnProperty("headRoll") && faceData.hasOwnProperty("headPitch")){
 
         // Appliquer directement la rotation à la tête du personnage
+
+        // TODO
 
         //headGroup.rotation.y = faceData.headYaw;   // Yaw
         //headGroup.rotation.x = faceData.headPitch; // Pitch

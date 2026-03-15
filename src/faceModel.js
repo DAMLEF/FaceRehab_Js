@@ -1,0 +1,118 @@
+import * as THREE from "three";
+
+import {FBXLoader} from "three/addons/loaders/FBXLoader";
+
+
+const fbxLoader = new FBXLoader()
+const textureLoader = new THREE.TextureLoader();
+
+// Gestion de la structure du modèle de visage compatible ARKIT
+const faceModelFileName = "assets/models/model.fbx"
+
+const faceModelHeadMeshName = "head_lod0_ORIGINAL"
+
+const faceModelJawMeshName = "teeth_ORIGINAL"
+const faceModelRightEyeMeshName = "eyeRight_ORIGINAL"
+const faceModelLeftEyeMeshName = "eyeLeft_ORIGINAL"
+
+// Gestion des textures du modèle
+const faceHeadTextureFileName = "assets/textures/head_base.png"
+
+const headTexture = textureLoader.load(faceHeadTextureFileName);
+headTexture.colorSpace = THREE.SRGBColorSpace;
+
+// Transform relatif au modèle
+const relativeScale = new THREE.Vector3(0.01, 0.01, 0.01)
+
+export function loadFaceModel(scene, debug = false){
+
+    // Définition des mesh du visage nécessaire pour la synchronisation
+    let faceMesh = undefined
+
+    let jawMash = undefined
+
+    let rightEyeMesh = undefined
+    let leftEyeMesh = undefined
+
+    let completeModel = undefined
+
+    // Chargement du modèle
+    fbxLoader.load(faceModelFileName, (fbxModel) => {
+
+        completeModel = fbxModel
+
+        // On ajoute à la scène le modèle
+        scene.add(fbxModel);
+
+        // Gestion de son positionnement
+        fbxModel.position.set(0,0,0);
+        fbxModel.scale.set(relativeScale.x, relativeScale.y, relativeScale.z);
+
+        if(debug){
+            console.log("[REHAB] 😀 Chargement du modèle de visage ")
+        }
+
+        // On parcourt les enfants du modèle pour trouver les mesh compatible ARKIT
+        fbxModel.traverse(child => {
+
+            if(debug){
+                console.log("[REHAB] - Enfant du modèle : " + child.type + " " + child.name);
+            }
+
+            if(child.isMesh || child.isSkinnedMesh){
+
+                if(debug){
+                    console.log("[REHAB] \t - Mesh : " + child.name);
+
+                    if(child.morphTargetInfluences){
+                        console.log("[REHAB] \t\t - Mesh Target influences : ");
+                        console.log(child.morphTargetDictionary)
+                    }
+                }
+
+                // On récupère les mesh particulier pour les ranger dans leur variable
+
+                // Mesh de la tête
+                if( child.name === faceModelHeadMeshName){
+                    // On stocke le faceMesh
+                    faceMesh = child;
+
+                    // On applique la texture de la tête
+                    faceMesh.material = new THREE.MeshStandardMaterial({
+                        map:          headTexture,
+                        color:     0xffffff,
+                        roughness:    0.6,
+                        metalness:    0.0,
+                    });
+                }
+
+                // Mesh de la mâchoire
+                if( child.name === faceModelJawMeshName){
+                    jawMash = child;
+
+                    child.material = new THREE.MeshStandardMaterial({
+                        color:     0xaaaaaa,
+                        roughness:    0.6,
+                        metalness:    0.0,
+                    });
+
+                }
+
+                // Mesh de l'œil droit
+                if( child.name === faceModelRightEyeMeshName ){
+                    rightEyeMesh = child;
+                }
+
+                // Mesh de l'oeil gauche
+                if( child.name === faceModelLeftEyeMeshName ){
+                    leftEyeMesh = child;
+                }
+
+            }
+
+        })
+    })
+
+
+    return {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};
+}
