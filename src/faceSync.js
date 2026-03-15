@@ -1,0 +1,88 @@
+function getBlendshapeCore(name) {
+
+    if (name.endsWith('Left')) {
+        return name.slice(0, -4); // enlève "Left"
+    } else if (name.endsWith('Right')) {
+        return name.slice(0, -5); // enlève "Right"
+    } else {
+        return name; // pas de Left/Right
+    }
+
+}
+
+const response = await fetch('src/config/faceMapping.json');
+const faceMapping = await response.json();
+
+
+/**
+ * La fonction permet d'altérer les détails morphologiques du visage selon le standard ARKIT.
+ * Il est possible de symétriser une partie du visage.
+ * @param faceMesh Mesh Three.JS du modèle de visage compatible ARKIT
+ * @param {Object<string, number>} faceData Donne toutes les valeurs morphologiques du visage selon le standard ARKIT
+ * @param {Object<string, number>} symmetricData Dictionnaire qui associe à chaque blendshapes symétrisasse de l'ARKIT
+ * une valeur qui indique s'il est nécessaire de faire une symétrie. 0 = Neutre, -1 = On symétrise à partir de la partie
+ * gauche du visage, 1 = On symétrise à partir de la partie droite du visage
+ **/
+export function faceSync(faceMesh, faceData, symmetricData = {}){
+
+    let finalState = {}
+
+    for(let key in faceData){
+
+        // Indique s'il est nécessaire d'appliquer la valeur courante du visage au modèle
+        let standardKeyApplication = true;
+        let validSymmetry = false;
+
+
+        if(faceData.hasOwnProperty(key) && faceMapping.hasOwnProperty(key)){
+
+            if(true){
+                // Si la table des symétries est non vide alors, on se prépare à symétriser des éléments
+
+                if(key.includes("Left") || key.includes("Right")){
+                    // Nous sommes face à un élément qui a un symétrique
+                    const baseBSName = getBlendshapeCore(key);
+
+                    if(symmetricData[baseBSName] !== 0 && symmetricData[baseBSName] !== undefined){
+                        if(symmetricData[baseBSName] === 1 && key.includes("Right")){
+                            validSymmetry = true;
+                        }
+                        else if(symmetricData[baseBSName] === -1 && key.includes("Left")){
+                            validSymmetry = true;
+                        }
+                        else{
+                            standardKeyApplication = false;
+                        }
+                    }
+
+
+                }
+            }
+
+            if(standardKeyApplication){
+                // On applique la valeur à l'élément courant du visage
+                finalState[key] = faceData[key]
+                faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
+
+
+                if(validSymmetry){
+                    // On applique la valeur à l'élément symétrique du visage
+                    faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[faceMapping[key].linkSymmetry]] = faceData[key];
+                }
+            }
+
+        }
+    }
+
+    if(faceData.hasOwnProperty("headYaw") && faceData.hasOwnProperty("headRoll") && faceData.hasOwnProperty("headPitch")){
+
+        // Appliquer directement la rotation à la tête du personnage
+
+        //headGroup.rotation.y = faceData.headYaw;   // Yaw
+        //headGroup.rotation.x = faceData.headPitch; // Pitch
+        //headGroup.rotation.z = faceData.headRoll;  // Roll
+    }
+
+}
+
+
