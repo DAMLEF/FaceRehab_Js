@@ -22,6 +22,7 @@ const headTexture = textureLoader.load(faceHeadTextureFileName);
 headTexture.colorSpace = THREE.SRGBColorSpace;
 
 // Transform relatif au modèle
+const relativePos  = new THREE.Vector3(-0.25, -1.35, 0)
 const relativeScale = new THREE.Vector3(0.01, 0.01, 0.01)
 
 export function loadFaceModel(scene, appState, debug = false){
@@ -45,7 +46,7 @@ export function loadFaceModel(scene, appState, debug = false){
         scene.add(fbxModel);
 
         // Gestion de son positionnement
-        fbxModel.position.set(0,0,0);
+        fbxModel.position.set(relativePos.x, relativePos.y, relativePos.z);
         fbxModel.scale.set(relativeScale.x, relativeScale.y, relativeScale.z);
 
         if(debug){
