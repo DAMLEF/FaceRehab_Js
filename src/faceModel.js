@@ -16,9 +16,22 @@ const faceModelRightEyeMeshName = "eyeRight_ORIGINAL"
 const faceModelLeftEyeMeshName = "eyeLeft_ORIGINAL"
 
 // Gestion des textures du modèle
-const faceHeadTextureFileName = "assets/textures/head_base.png"
+const faceHeadTextureFileName = "assets/textures/head_base2.png"
+const faceHeadNormalTextureFileName = "assets/textures/head_normal.png"
+const eyeTextureFileName = "assets/textures/eyeL_base.png"
+const eyeNormalTextureFileName = "assets/textures/eyeL_normal.png"
+const eyeIrisTextureFileName = "assets/textures/eyeL_iris.png"
+const teethTextureFileName = "assets/textures/teeth_base.png"
+const teethNormalTextureFileName = "assets/textures/teeth_normal.png"
 
 const headTexture = textureLoader.load(faceHeadTextureFileName);
+const headNormalTexture = textureLoader.load(faceHeadNormalTextureFileName);
+const eyeTexture = textureLoader.load(eyeTextureFileName);
+const eyeNormalTexture = textureLoader.load(eyeNormalTextureFileName);
+const eyeIrisTexture = textureLoader.load(eyeIrisTextureFileName);
+const teethTexture = textureLoader.load(teethTextureFileName);
+const teethNormalTexture = textureLoader.load(teethNormalTextureFileName);
+
 headTexture.colorSpace = THREE.SRGBColorSpace;
 
 // Transform relatif au modèle
@@ -80,6 +93,7 @@ export function loadFaceModel(scene, appState, debug = false){
                     // On applique la texture de la tête
                     faceMesh.material = new THREE.MeshStandardMaterial({
                         map:          headTexture,
+                        normalMap:    headNormalTexture,
                         color:     0xffffff,
                         roughness:    0.6,
                         metalness:    0.0,
@@ -91,8 +105,10 @@ export function loadFaceModel(scene, appState, debug = false){
                     jawMash = child;
 
                     child.material = new THREE.MeshStandardMaterial({
-                        color:     0xaaaaaa,
-                        roughness:    0.6,
+                        map:          teethTexture,
+                        normalMap:    teethNormalTexture,
+                        color:     0xbbbbbb,
+                        roughness:    0.2,
                         metalness:    0.0,
                     });
 
@@ -101,11 +117,27 @@ export function loadFaceModel(scene, appState, debug = false){
                 // Mesh de l'œil droit
                 if( child.name === faceModelRightEyeMeshName ){
                     rightEyeMesh = child;
+
+                    child.material = new THREE.MeshStandardMaterial({
+                        map:          eyeTexture,
+                        //normalMap:    eyeNormalTexture,
+                        color:     0xffffff,
+                        roughness:    0.6,
+                        metalness:    0.0,
+                    });
                 }
 
                 // Mesh de l'oeil gauche
                 if( child.name === faceModelLeftEyeMeshName ){
                     leftEyeMesh = child;
+
+                    child.material = new THREE.MeshStandardMaterial({
+                        map:          eyeTexture,
+                        //normalMap:    eyeNormalTexture,
+                        color:     0xffffff,
+                        roughness:    0.6,
+                        metalness:    0.0,
+                    });
                 }
 
             }
@@ -117,7 +149,6 @@ export function loadFaceModel(scene, appState, debug = false){
         appState.mainFaceModel = {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};
     })
 
-    console.log("fin du load");
 
 
     return {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};
