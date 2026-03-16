@@ -14,6 +14,23 @@ const response = await fetch('src/config/faceMapping.json');
 const faceMapping = await response.json();
 
 
+function getBlendShapeValue(mesh, blendshapeName){
+    return mesh.morphTargetInfluences[mesh.morphTargetDictionary[blendshapeName]];
+}
+
+function applyBlendShapeValue(mesh, blendshapeName, value){
+    mesh.morphTargetInfluences[mesh.morphTargetDictionary[blendshapeName]] = value;
+}
+
+function applyBlendShapeReference(mesh, referenceMesh, blendshapeName){
+    const referenceValue = getBlendShapeValue(mesh, blendshapeName);
+
+    applyBlendShapeValue(mesh, blendshapeName, referenceValue);
+
+}
+
+
+
 /**
  * La fonction permet d'altérer les détails morphologiques du visage selon le standard ARKIT.
  * Il est possible de symétriser une partie du visage.
@@ -81,12 +98,13 @@ export function faceSync(faceProfile, faceData, symmetricData = {}){
             if(standardKeyApplication){
                 // On applique la valeur à l'élément courant du visage
                 finalState[key] = faceData[key]
-                faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]] = faceData[key];
+                applyBlendShapeValue(faceMesh, key, faceData[key])
 
 
                 if(validSymmetry){
                     // On applique la valeur à l'élément symétrique du visage
-                    faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[faceMapping[key].linkSymmetry]] = faceData[key];
+                    const symmetricBlendshape = faceMapping[key].linkSymmetry;
+                    applyBlendShapeValue(faceMesh, symmetricBlendshape, faceData[key])
                 }
             }
 
@@ -97,19 +115,19 @@ export function faceSync(faceProfile, faceData, symmetricData = {}){
     // Puis, on applique rétroactivement aux autres mesh les valeurs du visage (car elle hérite des valeurs du visage).
     if(jawMesh !== undefined){
         for(let key in jawMesh.morphTargetDictionary){
-            jawMesh.morphTargetInfluences[jawMesh.morphTargetDictionary[key]] = faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]];
+            applyBlendShapeReference(jawMesh, faceMesh, key);
         }
     }
 
     if(rightEye !== undefined){
-        for(let key in rightEye.morphTargetInfluences){
-            rightEye.morphTargetInfluences[key] = faceMesh.morphTargetInfluences[key];
+        for(let key in rightEye.morphTargetDictionary){
+            applyBlendShapeReference(rightEye, faceMesh, key);
         }
     }
 
     if(leftEye !== undefined){
-        for(let key in leftEye.morphTargetInfluences){
-            leftEye.morphTargetInfluences[key] = faceMesh.morphTargetInfluences[key];
+        for(let key in leftEye.morphTargetDictionary){
+            applyBlendShapeReference(leftEye, faceMesh, key);
         }
     }
 
