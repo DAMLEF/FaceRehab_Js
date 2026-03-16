@@ -11,6 +11,8 @@ import { loadFaceModel } from "./faceModel";
 import { faceSync } from "./faceSync.js"
 import { faceMatch } from "./faceMatch";
 
+import { rehabExercise } from "./rehabExercise";
+
 
 import {allSymSlidersValues} from "./ui/symmetrySlider";
 import {updateCamera} from "./three/camera";
@@ -23,7 +25,11 @@ const appState = {
     latestFaceValues: {},
 
     mainFaceModel: undefined,
-    secondFaceModel: undefined
+    secondFaceModel: undefined,
+
+    similarityScore: 0,
+
+    rehabEx: undefined
 }
 
 // THREE Setup - Construction de la scène
@@ -40,7 +46,8 @@ loadFaceModel(scene, appState, true)
 
 // TODO : Test
 loadFaceModel(scene, appState, false)
-import smileBSProfile from "./data/faces/bsProfile_smile.json"
+
+
 
 
 
@@ -88,15 +95,27 @@ function animate(){
 
     // TODO: Test
     if(appState.secondFaceModel !== undefined && appState.mainFaceModel !== undefined){
-        appState.secondFaceModel.model.position.set(appState.mainFaceModel.model.position.x + 0.5, appState.mainFaceModel.model.position.y , appState.mainFaceModel.model.position.z)
+        rehabExercise(appState);
 
-        faceSync(appState.secondFaceModel, smileBSProfile, {})
-
-        console.log("SCORE : " + faceMatch(appState.latestFaceValues, smileBSProfile))
+        appState.similarityScore = faceMatch(appState.latestFaceValues, appState.rehabEx.currentProfile)
     }
     
     // Modification du visage en temps réel
     faceSync(appState.mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
+
+    if(appState.secondFaceModel !== undefined){
+        // TODO: Test
+        appState.secondFaceModel.model.position.set(appState.mainFaceModel.model.position.x + 0.5, appState.mainFaceModel.model.position.y , appState.mainFaceModel.model.position.z)
+
+        if(appState.rehabEx === undefined){
+            faceSync(appState.secondFaceModel, {}, {})
+        }
+        else{
+            faceSync(appState.secondFaceModel, appState.rehabEx.currentProfile, {})
+        }
+
+    }
+
 
     // Update debug
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
