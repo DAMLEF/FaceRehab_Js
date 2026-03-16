@@ -8,7 +8,8 @@ import { setupControls } from "./three/controls";
 
 import { loadFaceModel } from "./faceModel";
 
-import {faceSync} from "./faceSync.js"
+import { faceSync } from "./faceSync.js"
+import { faceMatch } from "./faceMatch";
 
 
 import {allSymSlidersValues} from "./ui/symmetrySlider";
@@ -26,7 +27,7 @@ const appState = {
 }
 
 // THREE Setup - Construction de la scène
-const {scene, camera, renderer} = setupThree();
+const {scene, camera, renderer, composer} = setupThree();
 document.body.appendChild(renderer.domElement)
 // ------------------------------------------------
 
@@ -40,7 +41,7 @@ loadFaceModel(scene, appState, true)
 // TODO : Test
 loadFaceModel(scene, appState, false)
 import smileBSProfile from "./data/faces/bsProfile_smile.json"
-import {faceMatch} from "./faceMatch";
+
 
 
 // Connexion au WebSocket (programme Python local (main.py dans le dossier tracker))
@@ -86,8 +87,8 @@ function animate(){
     }
 
     // TODO: Test
-    if(appState.secondFaceModel !== undefined){
-        appState.secondFaceModel.model.position.set(0.5, 0, 0)
+    if(appState.secondFaceModel !== undefined && appState.mainFaceModel !== undefined){
+        appState.secondFaceModel.model.position.set(appState.mainFaceModel.model.position.x + 0.5, appState.mainFaceModel.model.position.y , appState.mainFaceModel.model.position.z)
 
         faceSync(appState.secondFaceModel, smileBSProfile, {})
 
@@ -100,7 +101,7 @@ function animate(){
     // Update debug
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
-    renderer.render(scene,camera)
+    composer.render();
 }
 
 animate()
