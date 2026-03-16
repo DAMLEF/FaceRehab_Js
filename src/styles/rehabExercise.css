@@ -1,0 +1,45 @@
+#rehabExercise{
+    position: fixed;
+
+    width: 100%;
+
+    /* centre horizontalement */
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+
+
+}
+
+/* Barre de progression de la tenue de la face */
+#rehabExHoldBar{
+    position: relative;
+
+    /* Position vertical de la barre*/
+    top: 80vh;
+
+
+    width: 35%;
+    height: 20px;
+
+    background: white;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+    border: 2px solid #ddd;
+}
+
+#rehabHoldBarProgress{
+    height: 100%;
+    width: 0%;
+
+    background: #2a7fff;
+
+    transition: width 0.1s linear;
+
+
+}
+
+/* */

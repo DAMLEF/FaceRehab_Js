@@ -6,6 +6,7 @@ import angryBSProfile from "./data/faces/bsProfile_angry.json"
 import sadnessBSProfile from "./data/faces/bsProfile_sadness.json"
 import surpriseBSProfile from "./data/faces/bsProfile_surprise.json"
 import disgustBSProfile from "./data/faces/bsProfile_disgust.json"
+import {updateHoldBar} from "./ui/rehabExUI";
 
 // Liste des visages utilisés pour les exercices
 const faceProfiles = [smileBSProfile, angryBSProfile, surpriseBSProfile, disgustBSProfile, sadnessBSProfile];
@@ -30,24 +31,29 @@ class RehabExercise{
     }
 
     update(score){
-        console.log("SCORE :" + score);
 
-
+        let holdBarProgress = 0;
         if(score > SIMILARITY_THRESHOLD){
             if(this.holdStart == null){
                this.startHold();
             }
 
+
             const currentTime = Date.now();
             if(currentTime - this.holdStart > HOLD_DURATION){
-                console.log("HOLD TIME " + currentTime - this.holdStart)
                 this.newStep();
             }
+
+            holdBarProgress = (currentTime - this.holdStart)/HOLD_DURATION;
         }
         else{
             this.cancelHold();
         }
 
+        const holdBarActive = (this.holdStart !== null);
+
+
+        updateHoldBar(holdBarActive, holdBarProgress);
     }
 
     newStep(){

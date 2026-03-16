@@ -42,10 +42,10 @@ setupControls(camera, appState);
 
 
 // Chargement du modèle de visage qui suit en temps réel les données du socket (et on le range dans appState, car asynchrone)
-//loadFaceModel(scene, appState, true)
+loadFaceModel(scene, appState, true)
 
 // TODO : Test
-//loadFaceModel(scene, appState, false)
+loadFaceModel(scene, appState, false)
 
 
 
