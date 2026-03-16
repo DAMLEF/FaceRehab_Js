@@ -1,3 +1,6 @@
+const response = await fetch('src/config/faceMapping.json');
+const faceMapping = await response.json();
+
 function getBlendshapeCore(name) {
 
     if (name.endsWith('Left')) {
@@ -10,10 +13,6 @@ function getBlendshapeCore(name) {
 
 }
 
-const response = await fetch('src/config/faceMapping.json');
-const faceMapping = await response.json();
-
-
 function getBlendShapeValue(mesh, blendshapeName){
     return mesh.morphTargetInfluences[mesh.morphTargetDictionary[blendshapeName]];
 }
@@ -23,7 +22,7 @@ function applyBlendShapeValue(mesh, blendshapeName, value){
 }
 
 function applyBlendShapeReference(mesh, referenceMesh, blendshapeName){
-    const referenceValue = getBlendShapeValue(mesh, blendshapeName);
+    const referenceValue = getBlendShapeValue(referenceMesh, blendshapeName);
 
     applyBlendShapeValue(mesh, blendshapeName, referenceValue);
 
@@ -45,6 +44,10 @@ function applyBlendShapeReference(mesh, referenceMesh, blendshapeName){
  * gauche du visage, 1 = On symétrise à partir de la partie droite du visage
  **/
 export function faceSync(faceProfile, faceData, symmetricData = {}){
+
+    if(faceProfile === undefined || faceProfile === {}){
+        return;
+    }
 
     let finalState = {}
 

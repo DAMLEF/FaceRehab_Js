@@ -114,10 +114,17 @@ export function loadFaceModel(scene, appState, debug = false){
         
         })
 
-        appState.mainFaceModel = {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};
+        const faceProfile = {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};
+
+        if(appState.mainFaceModel === undefined){
+            appState.mainFaceModel = faceProfile;
+        }
+        else{
+            appState.secondFaceModel = faceProfile;
+        }
+
     })
 
-    console.log("fin du load");
 
 
     return {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};

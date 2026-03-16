@@ -13,13 +13,16 @@ import {faceSync} from "./faceSync.js"
 
 import {allSymSlidersValues} from "./ui/symmetrySlider";
 import {updateCamera} from "./three/camera";
+import {downloadJSONFile} from "./utils/downloadFile";
 
 // -----------------------------------------------------
 
 const appState = {
     keys: {},
     latestFaceValues: {},
-    mainFaceModel: undefined
+
+    mainFaceModel: undefined,
+    secondFaceModel: undefined
 }
 
 // THREE Setup - Construction de la scène
@@ -30,8 +33,14 @@ document.body.appendChild(renderer.domElement)
 // Construction des contrôles clavier/souris
 setupControls(camera, appState);
 
-// Chargement du modèle de visage qui suit en temps réel les données du socket
-const mainFaceModel = loadFaceModel(scene, appState, true)
+
+// Chargement du modèle de visage qui suit en temps réel les données du socket (et on le range dans appState, car asynchrone)
+loadFaceModel(scene, appState, true)
+
+// TODO : Test
+loadFaceModel(scene, appState, false)
+import smileBSProfile from "./data/faces/bsProfile_smile.json"
+import {faceMatch} from "./faceMatch";
 
 
 // Connexion au WebSocket (programme Python local (main.py dans le dossier tracker))
@@ -64,6 +73,26 @@ function animate(){
     requestAnimationFrame(animate)
 
     updateCamera(camera, appState)
+
+    // Téléchargement en fichier des BS de la face courante
+    // TODO : Déplacer ?
+    if( appState.keys["y"]){
+        const now = new Date();
+        const fileName = `bsProfile_${now.getTime()}.json`;
+
+        downloadJSONFile(appState.latestFaceValues, fileName)
+
+        appState.keys["y"] = false;
+    }
+
+    // TODO: Test
+    if(appState.secondFaceModel !== undefined){
+        appState.secondFaceModel.model.position.set(0.5, 0, 0)
+
+        faceSync(appState.secondFaceModel, smileBSProfile, {})
+
+        console.log("SCORE : " + faceMatch(appState.latestFaceValues, smileBSProfile))
+    }
     
     // Modification du visage en temps réel
     faceSync(appState.mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
