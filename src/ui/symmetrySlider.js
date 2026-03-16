@@ -1,5 +1,6 @@
 import symmetricBlendshapes from '/src/config/symmetricBlendshapes.json' with { type: 'json' };
 import { getHTMLTemplate } from "../utils/getHTMLTemplate";
+import { downloadJSONFile } from "../utils/downloadFile";
 
 const symSliderTemplateHTML = await fetch("src/templates/symmetrySlider.html").then(r => r.text());
 const symSliderControlTemplateHTML = await fetch("src/templates/symmetrySliderControl.html").then(r => r.text());
@@ -56,24 +57,13 @@ function createSymSliderControl(name){
 // Téléchargement du profil symétrique de l'utilisateur
 function downloadSymProfile(){
     // On définit nos données JSON pour le profil
-    const profile = JSON.stringify(allSymSlidersValues, null, 2);
+    const profile = allSymSlidersValues;
 
-    // On crée l'objet BLOB
-    const blobObj = new Blob([profile], { type: "application/json" });
-    const urlProfile = URL.createObjectURL(blobObj);
-
-    const aDownload = document.createElement('a');
-
+    // Construction du fileName
     const now = new Date();
     const fileName = `symProfile_${now.getTime()}.json`;
 
-    aDownload.setAttribute('href', urlProfile);
-    aDownload.setAttribute('download', fileName);
-
-    aDownload.click();
-
-    URL.revokeObjectURL(urlProfile);
-
+    downloadJSONFile(profile, fileName);
 }
 
 function loadSymProfile(){

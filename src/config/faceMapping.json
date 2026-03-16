@@ -1,54 +1,74 @@
 {
-  "browDownLeft": { "source": null, "realId": 0, "name": "browDownLeft", "symmetry": true, "linkSymmetry": "browDownRight" },
-  "browDownRight": { "source": null, "realId": 1, "name": "browDownRight", "symmetry": true, "linkSymmetry": "browDownLeft" },
-  "browInnerUp": { "source": null, "realId": 2, "name": "browInnerUp", "symmetry": false, "linkSymmetry": null },
-  "browOuterUpLeft": { "source": null, "realId": 3, "name": "browOuterUpLeft", "symmetry": true, "linkSymmetry": "browOuterUpRight" },
-  "browOuterUpRight": { "source": null, "realId": 4, "name": "browOuterUpRight", "symmetry": true, "linkSymmetry": "browOuterUpLeft" },
-  "cheekPuff": { "source": null, "realId": 5, "name": "cheekPuff", "symmetry": false, "linkSymmetry": null },
-  "cheekSquintLeft": { "source": null, "realId": 6, "name": "cheekSquintLeft", "symmetry": true, "linkSymmetry": "cheekSquintRight" },
-  "cheekSquintRight": { "source": null, "realId": 7, "name": "cheekSquintRight", "symmetry": true, "linkSymmetry": "cheekSquintLeft" },
-  "eyeBlinkLeft": { "source": null, "realId": 8, "name": "eyeBlinkLeft", "symmetry": true, "linkSymmetry": "eyeBlinkRight" },
-  "eyeBlinkRight": { "source": null, "realId": 9, "name": "eyeBlinkRight", "symmetry": true, "linkSymmetry": "eyeBlinkLeft" },
-  "eyeLookDownLeft": { "source": null, "realId": 10, "name": "eyeLookDownLeft", "symmetry": true, "linkSymmetry": "eyeLookDownRight" },
-  "eyeLookDownRight": { "source": null, "realId": 11, "name": "eyeLookDownRight", "symmetry": true, "linkSymmetry": "eyeLookDownLeft" },
-  "eyeLookInLeft": { "source": null, "realId": 12, "name": "eyeLookInLeft", "symmetry": true, "linkSymmetry": "eyeLookInRight" },
-  "eyeLookInRight": { "source": null, "realId": 13, "name": "eyeLookInRight", "symmetry": true, "linkSymmetry": "eyeLookInLeft" },
-  "eyeLookOutLeft": { "source": null, "realId": 14, "name": "eyeLookOutLeft", "symmetry": true, "linkSymmetry": "eyeLookOutRight" },
-  "eyeLookOutRight": { "source": null, "realId": 15, "name": "eyeLookOutRight", "symmetry": true, "linkSymmetry": "eyeLookOutLeft" },
-  "eyeLookUpLeft": { "source": null, "realId": 16, "name": "eyeLookUpLeft", "symmetry": true, "linkSymmetry": "eyeLookUpRight" },
-  "eyeLookUpRight": { "source": null, "realId": 17, "name": "eyeLookUpRight", "symmetry": true, "linkSymmetry": "eyeLookUpLeft" },
-  "eyeSquintLeft": { "source": null, "realId": 18, "name": "eyeSquintLeft", "symmetry": true, "linkSymmetry": "eyeSquintRight" },
-  "eyeSquintRight": { "source": null, "realId": 19, "name": "eyeSquintRight", "symmetry": true, "linkSymmetry": "eyeSquintLeft" },
-  "jawForward": { "source": null, "realId": 20, "name": "jawForward", "symmetry": false, "linkSymmetry": null },
-  "jawLeft": { "source": null, "realId": 21, "name": "jawLeft", "symmetry": true, "linkSymmetry": "jawRight" },
-  "jawRight": { "source": null, "realId": 22, "name": "jawRight", "symmetry": true, "linkSymmetry": "jawLeft" },
-  "jawOpen": { "source": null, "realId": 23, "name": "jawOpen", "symmetry": false, "linkSymmetry": null },
-  "mouthClose": { "source": null, "realId": 24, "name": "mouthClose", "symmetry": false, "linkSymmetry": null },
-  "mouthDimpleLeft": { "source": null, "realId": 25, "name": "mouthDimpleLeft", "symmetry": true, "linkSymmetry": "mouthDimpleRight" },
-  "mouthDimpleRight": { "source": null, "realId": 26, "name": "mouthDimpleRight", "symmetry": true, "linkSymmetry": "mouthDimpleLeft" },
-  "mouthFrownLeft": { "source": null, "realId": 27, "name": "mouthFrownLeft", "symmetry": true, "linkSymmetry": "mouthFrownRight" },
-  "mouthFrownRight": { "source": null, "realId": 28, "name": "mouthFrownRight", "symmetry": true, "linkSymmetry": "mouthFrownLeft" },
-  "mouthFunnel": { "source": null, "realId": 29, "name": "mouthFunnel", "symmetry": false, "linkSymmetry": null },
-  "mouthLeft": { "source": null, "realId": 30, "name": "mouthLeft", "symmetry": true, "linkSymmetry": "mouthRight" },
-  "mouthRight": { "source": null, "realId": 31, "name": "mouthRight", "symmetry": true, "linkSymmetry": "mouthLeft" },
-  "mouthPressLeft": { "source": null, "realId": 32, "name": "mouthPressLeft", "symmetry": true, "linkSymmetry": "mouthPressRight" },
-  "mouthPressRight": { "source": null, "realId": 33, "name": "mouthPressRight", "symmetry": true, "linkSymmetry": "mouthPressLeft" },
-  "mouthPucker": { "source": null, "realId": 34, "name": "mouthPucker", "symmetry": false, "linkSymmetry": null },
-  "mouthRollLower": { "source": null, "realId": 35, "name": "mouthRollLower", "symmetry": false, "linkSymmetry": null },
-  "mouthRollUpper": { "source": null, "realId": 36, "name": "mouthRollUpper", "symmetry": false, "linkSymmetry": null },
-  "mouthShrugLower": { "source": null, "realId": 37, "name": "mouthShrugLower", "symmetry": false, "linkSymmetry": null },
-  "mouthShrugUpper": { "source": null, "realId": 38, "name": "mouthShrugUpper", "symmetry": false, "linkSymmetry": null },
-  "mouthSmileLeft": { "source": null, "realId": 39, "name": "mouthSmileLeft", "symmetry": true, "linkSymmetry": "mouthSmileRight" },
-  "mouthSmileRight": { "source": null, "realId": 40, "name": "mouthSmileRight", "symmetry": true, "linkSymmetry": "mouthSmileLeft" },
-  "mouthStretchLeft": { "source": null, "realId": 41, "name": "mouthStretchLeft", "symmetry": true, "linkSymmetry": "mouthStretchRight" },
-  "mouthStretchRight": { "source": null, "realId": 42, "name": "mouthStretchRight", "symmetry": true, "linkSymmetry": "mouthStretchLeft" },
-  "mouthUpperUpLeft": { "source": null, "realId": 43, "name": "mouthUpperUpLeft", "symmetry": true, "linkSymmetry": "mouthUpperUpRight" },
-  "mouthUpperUpRight": { "source": null, "realId": 44, "name": "mouthUpperUpRight", "symmetry": true, "linkSymmetry": "mouthUpperUpLeft" },
-  "noseSneerLeft": { "source": null, "realId": 45, "name": "noseSneerLeft", "symmetry": true, "linkSymmetry": "noseSneerRight" },
-  "noseSneerRight": { "source": null, "realId": 46, "name": "noseSneerRight", "symmetry": true, "linkSymmetry": "noseSneerLeft" },
-  "tongueOut": { "source": null, "realId": 47, "name": "tongueOut", "symmetry": false, "linkSymmetry": null },
-  "eyeWideLeft": { "source": null, "realId": 48, "name": "eyeWideLeft", "symmetry": true, "linkSymmetry": "eyeWideRight" },
-  "eyeWideRight": { "source": null, "realId": 49, "name": "eyeWideRight", "symmetry": true, "linkSymmetry": "eyeWideLeft" },
-  "cheekSquintLeft2": { "source": null, "realId": 50, "name": "cheekSquintLeft2", "symmetry": true, "linkSymmetry": "cheekSquintRight2" },
-  "cheekSquintRight2": { "source": null, "realId": 51, "name": "cheekSquintRight2", "symmetry": true, "linkSymmetry": "cheekSquintLeft2" }
+  "browDownLeft": { "source": null, "realId": 0, "name": "browDownLeft", "symmetry": true, "linkSymmetry": "browDownRight", "weight": 1.2 },
+  "browDownRight": { "source": null, "realId": 1, "name": "browDownRight", "symmetry": true, "linkSymmetry": "browDownLeft", "weight": 1.2 },
+  "browInnerUp": { "source": null, "realId": 2, "name": "browInnerUp", "symmetry": false, "linkSymmetry": null, "weight": 1.4 },
+  "browOuterUpLeft": { "source": null, "realId": 3, "name": "browOuterUpLeft", "symmetry": true, "linkSymmetry": "browOuterUpRight", "weight": 1.1 },
+  "browOuterUpRight": { "source": null, "realId": 4, "name": "browOuterUpRight", "symmetry": true, "linkSymmetry": "browOuterUpLeft", "weight": 1.1 },
+
+  "cheekPuff": { "source": null, "realId": 5, "name": "cheekPuff", "symmetry": false, "linkSymmetry": null, "weight": 0.5 },
+  "cheekSquintLeft": { "source": null, "realId": 6, "name": "cheekSquintLeft", "symmetry": true, "linkSymmetry": "cheekSquintRight", "weight": 0.9 },
+  "cheekSquintRight": { "source": null, "realId": 7, "name": "cheekSquintRight", "symmetry": true, "linkSymmetry": "cheekSquintLeft", "weight": 0.9 },
+
+  "eyeBlinkLeft": { "source": null, "realId": 8, "name": "eyeBlinkLeft", "symmetry": true, "linkSymmetry": "eyeBlinkRight", "weight": 0.8 },
+  "eyeBlinkRight": { "source": null, "realId": 9, "name": "eyeBlinkRight", "symmetry": true, "linkSymmetry": "eyeBlinkLeft", "weight": 0.8 },
+  "eyeLookDownLeft": { "source": null, "realId": 10, "name": "eyeLookDownLeft", "symmetry": true, "linkSymmetry": "eyeLookDownRight", "weight": 0.4 },
+  "eyeLookDownRight": { "source": null, "realId": 11, "name": "eyeLookDownRight", "symmetry": true, "linkSymmetry": "eyeLookDownLeft", "weight": 0.4 },
+  "eyeLookInLeft": { "source": null, "realId": 12, "name": "eyeLookInLeft", "symmetry": true, "linkSymmetry": "eyeLookInRight", "weight": 0.4 },
+  "eyeLookInRight": { "source": null, "realId": 13, "name": "eyeLookInRight", "symmetry": true, "linkSymmetry": "eyeLookInLeft", "weight": 0.4 },
+  "eyeLookOutLeft": { "source": null, "realId": 14, "name": "eyeLookOutLeft", "symmetry": true, "linkSymmetry": "eyeLookOutRight", "weight": 0.4 },
+  "eyeLookOutRight": { "source": null, "realId": 15, "name": "eyeLookOutRight", "symmetry": true, "linkSymmetry": "eyeLookOutLeft", "weight": 0.4 },
+  "eyeLookUpLeft": { "source": null, "realId": 16, "name": "eyeLookUpLeft", "symmetry": true, "linkSymmetry": "eyeLookUpRight", "weight": 0.4 },
+  "eyeLookUpRight": { "source": null, "realId": 17, "name": "eyeLookUpRight", "symmetry": true, "linkSymmetry": "eyeLookUpLeft", "weight": 0.4 },
+
+  "eyeSquintLeft": { "source": null, "realId": 18, "name": "eyeSquintLeft", "symmetry": true, "linkSymmetry": "eyeSquintRight", "weight": 1.0 },
+  "eyeSquintRight": { "source": null, "realId": 19, "name": "eyeSquintRight", "symmetry": true, "linkSymmetry": "eyeSquintLeft", "weight": 1.0 },
+
+  "jawForward": { "source": null, "realId": 20, "name": "jawForward", "symmetry": false, "linkSymmetry": null, "weight": 1.0 },
+  "jawLeft": { "source": null, "realId": 21, "name": "jawLeft", "symmetry": true, "linkSymmetry": "jawRight", "weight": 0.8 },
+  "jawRight": { "source": null, "realId": 22, "name": "jawRight", "symmetry": true, "linkSymmetry": "jawLeft", "weight": 0.8 },
+  "jawOpen": { "source": null, "realId": 23, "name": "jawOpen", "symmetry": false, "linkSymmetry": null, "weight": 1.5 },
+
+  "mouthClose": { "source": null, "realId": 24, "name": "mouthClose", "symmetry": false, "linkSymmetry": null, "weight": 1.0 },
+
+  "mouthDimpleLeft": { "source": null, "realId": 25, "name": "mouthDimpleLeft", "symmetry": true, "linkSymmetry": "mouthDimpleRight", "weight": 1.2 },
+  "mouthDimpleRight": { "source": null, "realId": 26, "name": "mouthDimpleRight", "symmetry": true, "linkSymmetry": "mouthDimpleLeft", "weight": 1.2 },
+
+  "mouthFrownLeft": { "source": null, "realId": 27, "name": "mouthFrownLeft", "symmetry": true, "linkSymmetry": "mouthFrownRight", "weight": 1.7 },
+  "mouthFrownRight": { "source": null, "realId": 28, "name": "mouthFrownRight", "symmetry": true, "linkSymmetry": "mouthFrownLeft", "weight": 1.7 },
+
+  "mouthFunnel": { "source": null, "realId": 29, "name": "mouthFunnel", "symmetry": false, "linkSymmetry": null, "weight": 1.1 },
+
+  "mouthLeft": { "source": null, "realId": 30, "name": "mouthLeft", "symmetry": true, "linkSymmetry": "mouthRight", "weight": 0.9 },
+  "mouthRight": { "source": null, "realId": 31, "name": "mouthRight", "symmetry": true, "linkSymmetry": "mouthLeft", "weight": 0.9 },
+
+  "mouthPressLeft": { "source": null, "realId": 32, "name": "mouthPressLeft", "symmetry": true, "linkSymmetry": "mouthPressRight", "weight": 1.1 },
+  "mouthPressRight": { "source": null, "realId": 33, "name": "mouthPressRight", "symmetry": true, "linkSymmetry": "mouthPressLeft", "weight": 1.1 },
+
+  "mouthPucker": { "source": null, "realId": 34, "name": "mouthPucker", "symmetry": false, "linkSymmetry": null, "weight": 1.3 },
+
+  "mouthRollLower": { "source": null, "realId": 35, "name": "mouthRollLower", "symmetry": false, "linkSymmetry": null, "weight": 0.8 },
+  "mouthRollUpper": { "source": null, "realId": 36, "name": "mouthRollUpper", "symmetry": false, "linkSymmetry": null, "weight": 0.8 },
+
+  "mouthShrugLower": { "source": null, "realId": 37, "name": "mouthShrugLower", "symmetry": false, "linkSymmetry": null, "weight": 0.7 },
+  "mouthShrugUpper": { "source": null, "realId": 38, "name": "mouthShrugUpper", "symmetry": false, "linkSymmetry": null, "weight": 0.7 },
+
+  "mouthSmileLeft": { "source": null, "realId": 39, "name": "mouthSmileLeft", "symmetry": true, "linkSymmetry": "mouthSmileRight", "weight": 2.0 },
+  "mouthSmileRight": { "source": null, "realId": 40, "name": "mouthSmileRight", "symmetry": true, "linkSymmetry": "mouthSmileLeft", "weight": 2.0 },
+
+  "mouthStretchLeft": { "source": null, "realId": 41, "name": "mouthStretchLeft", "symmetry": true, "linkSymmetry": "mouthStretchRight", "weight": 1.2 },
+  "mouthStretchRight": { "source": null, "realId": 42, "name": "mouthStretchRight", "symmetry": true, "linkSymmetry": "mouthStretchLeft", "weight": 1.2 },
+
+  "mouthUpperUpLeft": { "source": null, "realId": 43, "name": "mouthUpperUpLeft", "symmetry": true, "linkSymmetry": "mouthUpperUpRight", "weight": 1.3 },
+  "mouthUpperUpRight": { "source": null, "realId": 44, "name": "mouthUpperUpRight", "symmetry": true, "linkSymmetry": "mouthUpperUpLeft", "weight": 1.3 },
+
+  "noseSneerLeft": { "source": null, "realId": 45, "name": "noseSneerLeft", "symmetry": true, "linkSymmetry": "noseSneerRight", "weight": 1.0 },
+  "noseSneerRight": { "source": null, "realId": 46, "name": "noseSneerRight", "symmetry": true, "linkSymmetry": "noseSneerLeft", "weight": 1.0 },
+
+  "tongueOut": { "source": null, "realId": 47, "name": "tongueOut", "symmetry": false, "linkSymmetry": null, "weight": 0.3 },
+
+  "eyeWideLeft": { "source": null, "realId": 48, "name": "eyeWideLeft", "symmetry": true, "linkSymmetry": "eyeWideRight", "weight": 1.0 },
+  "eyeWideRight": { "source": null, "realId": 49, "name": "eyeWideRight", "symmetry": true, "linkSymmetry": "eyeWideLeft", "weight": 1.0 },
+
+  "cheekSquintLeft2": { "source": null, "realId": 50, "name": "cheekSquintLeft2", "symmetry": true, "linkSymmetry": "cheekSquintRight2", "weight": 0.9 },
+  "cheekSquintRight2": { "source": null, "realId": 51, "name": "cheekSquintRight2", "symmetry": true, "linkSymmetry": "cheekSquintLeft2", "weight": 0.9 }
 }

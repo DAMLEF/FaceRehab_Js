@@ -18,19 +18,21 @@ const faceModelLeftEyeMeshName = "eyeLeft_ORIGINAL"
 // Gestion des textures du modèle
 const faceHeadTextureFileName = "assets/textures/head_base2.png"
 const faceHeadNormalTextureFileName = "assets/textures/head_normal.png"
+const faceHeadRoughnessTextureFileName = "assets/textures/head_Roughness.png"
 const eyeTextureFileName = "assets/textures/eyeL_base.png"
 const eyeNormalTextureFileName = "assets/textures/eyeL_normal.png"
-const eyeIrisTextureFileName = "assets/textures/eyeL_iris.png"
 const teethTextureFileName = "assets/textures/teeth_base.png"
 const teethNormalTextureFileName = "assets/textures/teeth_normal.png"
+const teethRoughnessTextureFileName = "assets/textures/teeth_Roughness.png"
 
 const headTexture = textureLoader.load(faceHeadTextureFileName);
 const headNormalTexture = textureLoader.load(faceHeadNormalTextureFileName);
+const headRoughTexture = textureLoader.load(faceHeadRoughnessTextureFileName);
 const eyeTexture = textureLoader.load(eyeTextureFileName);
 const eyeNormalTexture = textureLoader.load(eyeNormalTextureFileName);
-const eyeIrisTexture = textureLoader.load(eyeIrisTextureFileName);
 const teethTexture = textureLoader.load(teethTextureFileName);
 const teethNormalTexture = textureLoader.load(teethNormalTextureFileName);
+const teethRoughnessTexture = textureLoader.load(teethRoughnessTextureFileName);
 
 headTexture.colorSpace = THREE.SRGBColorSpace;
 
@@ -94,8 +96,9 @@ export function loadFaceModel(scene, appState, debug = false){
                     faceMesh.material = new THREE.MeshStandardMaterial({
                         map:          headTexture,
                         normalMap:    headNormalTexture,
+                        roughnessMap: headRoughTexture,
+
                         color:     0xffffff,
-                        roughness:    0.6,
                         metalness:    0.0,
                     });
                 }
@@ -107,8 +110,9 @@ export function loadFaceModel(scene, appState, debug = false){
                     child.material = new THREE.MeshStandardMaterial({
                         map:          teethTexture,
                         normalMap:    teethNormalTexture,
+                        roughnessMap: teethRoughnessTexture,
+
                         color:     0xbbbbbb,
-                        roughness:    0.2,
                         metalness:    0.0,
                     });
 
@@ -120,9 +124,9 @@ export function loadFaceModel(scene, appState, debug = false){
 
                     child.material = new THREE.MeshStandardMaterial({
                         map:          eyeTexture,
-                        //normalMap:    eyeNormalTexture,
-                        color:     0xffffff,
-                        roughness:    0.6,
+                        normalMap:    eyeNormalTexture,
+                        color:     0xbbbbbb,
+                        roughness:    0.3,
                         metalness:    0.0,
                     });
                 }
@@ -133,9 +137,9 @@ export function loadFaceModel(scene, appState, debug = false){
 
                     child.material = new THREE.MeshStandardMaterial({
                         map:          eyeTexture,
-                        //normalMap:    eyeNormalTexture,
-                        color:     0xffffff,
-                        roughness:    0.6,
+                        normalMap:    eyeNormalTexture,
+                        color:     0xbbbbbb,
+                        roughness:    0.3,
                         metalness:    0.0,
                     });
                 }
@@ -146,7 +150,15 @@ export function loadFaceModel(scene, appState, debug = false){
         
         })
 
-        appState.mainFaceModel = {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};
+        const faceProfile = {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};
+
+        if(appState.mainFaceModel === undefined){
+            appState.mainFaceModel = faceProfile;
+        }
+        else{
+            appState.secondFaceModel = faceProfile;
+        }
+
     })
 
 
