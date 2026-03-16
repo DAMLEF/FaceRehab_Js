@@ -40,6 +40,10 @@ export function faceSync(faceProfile, faceData, symmetricData = {}){
 
     let leftEye = faceProfile.leftEye;
 
+    if(faceMesh === undefined){
+        // console.error("Le profil de visage doit au moins contenir un mesh de tête (head) avec les morphTargetDictionary correctement renseignés.");
+        return;
+    }
 
     // On attribue ensuite les valeurs dans un premier temps au visage en priorité en suivant les éventuelles symétries
     for(let key in faceData){
@@ -93,19 +97,19 @@ export function faceSync(faceProfile, faceData, symmetricData = {}){
     // Puis, on applique rétroactivement aux autres mesh les valeurs du visage (car elle hérite des valeurs du visage).
     if(jawMesh !== undefined){
         for(let key in jawMesh.morphTargetDictionary){
-            jawMesh.morphTargetDictionary[key] = faceMesh.morphTargetDictionary[key];
+            jawMesh.morphTargetInfluences[jawMesh.morphTargetDictionary[key]] = faceMesh.morphTargetInfluences[faceMesh.morphTargetDictionary[key]];
         }
     }
 
     if(rightEye !== undefined){
-        for(let key in rightEye){
-            rightEye.morphTargetDictionary[key] = faceMesh.morphTargetDictionary[key];
+        for(let key in rightEye.morphTargetInfluences){
+            rightEye.morphTargetInfluences[key] = faceMesh.morphTargetInfluences[key];
         }
     }
 
     if(leftEye !== undefined){
-        for(let key in leftEye){
-            leftEye.morphTargetDictionary[key] = faceMesh.morphTargetDictionary[key];
+        for(let key in leftEye.morphTargetInfluences){
+            leftEye.morphTargetInfluences[key] = faceMesh.morphTargetInfluences[key];
         }
     }
 

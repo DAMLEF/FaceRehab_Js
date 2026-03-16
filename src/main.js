@@ -18,7 +18,8 @@ import {updateCamera} from "./three/camera";
 
 const appState = {
     keys: {},
-    latestFaceValues: {}
+    latestFaceValues: {},
+    mainFaceModel: undefined
 }
 
 // THREE Setup - Construction de la scène
@@ -30,7 +31,7 @@ document.body.appendChild(renderer.domElement)
 setupControls(camera, appState);
 
 // Chargement du modèle de visage qui suit en temps réel les données du socket
-const mainFaceModel = loadFaceModel(scene, true)
+const mainFaceModel = loadFaceModel(scene, appState, true)
 
 
 // Connexion au WebSocket (programme Python local (main.py dans le dossier tracker))
@@ -63,9 +64,9 @@ function animate(){
     requestAnimationFrame(animate)
 
     updateCamera(camera, appState)
-
+    
     // Modification du visage en temps réel
-    faceSync(mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
+    faceSync(appState.mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
 
     // Update debug
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;

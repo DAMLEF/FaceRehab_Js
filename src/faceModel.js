@@ -24,7 +24,7 @@ headTexture.colorSpace = THREE.SRGBColorSpace;
 // Transform relatif au modèle
 const relativeScale = new THREE.Vector3(0.01, 0.01, 0.01)
 
-export function loadFaceModel(scene, debug = false){
+export function loadFaceModel(scene, appState, debug = false){
 
     // Définition des mesh du visage nécessaire pour la synchronisation
     let faceMesh = undefined
@@ -110,8 +110,14 @@ export function loadFaceModel(scene, debug = false){
 
             }
 
+        
+        
         })
+
+        appState.mainFaceModel = {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};
     })
+
+    console.log("fin du load");
 
 
     return {head: faceMesh, jaw: jawMash, leftEye: leftEyeMesh, rightEye: rightEyeMesh, model: completeModel};
