@@ -110,13 +110,15 @@ export function setupThree(){
 }
 
 function onWindowResize(camera, renderer) {
+    const canvas = renderer.domElement;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+
+    renderer.setSize(width, height);
+
 
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-
-    renderer.setSize(width, height);
 
 }
