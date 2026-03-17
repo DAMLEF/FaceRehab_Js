@@ -33,7 +33,7 @@ const appState = {
 }
 
 // THREE Setup - Construction de la scène
-const {scene, camera, renderer} = setupThree();
+const {scene, camera, renderer, composer} = setupThree();
 document.body.appendChild(renderer.domElement)
 // ------------------------------------------------
 
@@ -120,7 +120,7 @@ function animate(){
     // Update debug
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
-    renderer.render(scene,camera)
+    composer.render();
 }
 
 animate()
