@@ -125,9 +125,6 @@ while cap.isOpened():
             cx, cy = int(p.x * W), int(p.y * H)
             cv2.circle(debug, (cx, cy), 1, (0, 255, 0), -1)
 
-        cv2.putText(debug,
-            f"jaw:{bs.get('jawOpen',0):.2f} blinkL:{bs.get('eyeBlinkLeft',0):.2f} blinkR:{bs.get('eyeBlinkRight',0):.2f}",
-            (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 255), 1)
         cv2.putText(debug, "Face tracked", (10, 30),
             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 200, 0), 2)
     else:
