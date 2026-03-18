@@ -1,7 +1,3 @@
-import * as THREE from 'three'
-import {FBXLoader} from 'three/examples/jsm/loaders/FBXLoader.js'
-
-
 // Module interne au projet
 import { setupThree } from "./three/threeSetup";
 import { setupControls } from "./three/controls";
@@ -53,6 +49,7 @@ loadFaceModel(scene, appState, false)
 
 // Connexion au WebSocket (programme Python local (main.py dans le dossier tracker))
 const ws = new WebSocket('ws://localhost:8080');
+const wsBridge = new WebSocket('ws://localhost:8081');
 
 ws.onopen = () => {
     console.log('WebSocket connecté');
@@ -103,6 +100,23 @@ function animate(){
     // Modification du visage en temps réel
     faceSync(appState.mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
 
+    // Relire les valeurs finales depuis le mesh (post-symétrie)
+    if (wsBridge.readyState === WebSocket.OPEN && appState.mainFaceModel?.head) {
+        const mesh = appState.mainFaceModel.head;
+        const syncedValues = {};
+
+        for (const [name, index] of Object.entries(mesh.morphTargetDictionary)) {
+            syncedValues[name] = mesh.morphTargetInfluences[index];
+        }
+
+        // Ajouter la rotation de tête
+        //syncedValues.headYaw   = appState.latestFaceValues.headYaw   ?? 0;
+        //syncedValues.headPitch = appState.latestFaceValues.headPitch ?? 0;
+        //syncedValues.headRoll  = appState.latestFaceValues.headRoll  ?? 0;
+
+        wsBridge.send(JSON.stringify(syncedValues));
+    }
+
     if(appState.secondFaceModel !== undefined){
         // TODO: Test
         appState.secondFaceModel.model.position.set(appState.mainFaceModel.model.position.x + 0.5, appState.mainFaceModel.model.position.y , appState.mainFaceModel.model.position.z)
@@ -116,12 +130,10 @@ function animate(){
 
     }
 
-
     // Update debug
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
-    composer.render();
+    //composer.render();
 }
 
 animate()
-

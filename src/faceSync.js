@@ -144,7 +144,7 @@ export function faceSync(faceProfile, faceData, symmetricData = {}){
         //headGroup.rotation.x = faceData.headPitch; // Pitch
         //headGroup.rotation.z = faceData.headRoll;  // Roll
     }
-
+    
 }
 
 
