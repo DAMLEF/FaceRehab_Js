@@ -68,7 +68,10 @@ landmarker = FaceLandmarker.create_from_options(options)
 
 # Adaptateur pour rendre les landmarks compatibles avec face.py
 class LM:
-    def __init__(self, x, y, z): self.x = x; self.y = y; self.z = z
+    def __init__(self, x, y, z): 
+        self.x = x 
+        self.y = y 
+        self.z = z
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
 while cap.isOpened():
