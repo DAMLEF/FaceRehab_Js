@@ -64,7 +64,7 @@ class RehabExercise{
 
 
 
-        const skipStatus = updateRehabExUI(this.currentStep + 1, STEPS_PER_EXERCISE, holdBarActive, holdBarProgress, skipActive, score);
+        const skipStatus = updateRehabExUI(this.currentStep + 1, STEPS_PER_EXERCISE, holdBarActive, holdBarProgress, skipActive, score*100);
 
         if(skipStatus){
             this.newStep();

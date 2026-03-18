@@ -133,7 +133,7 @@ function animate(){
     // Update debug
     debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
 
-    //composer.render();
+    composer.render();
 }
 
 animate()

@@ -73,7 +73,7 @@ export function setupThree(){
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
     scene.add(ambientLight);
 
-    const renderer = new THREE.WebGLRenderer()
+    const renderer = new THREE.WebGLRenderer({ antialiasting : true })
     renderer.setSize(innerWidth,innerHeight)
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.toneMapping = THREE.ACESFilmicToneMapping; // or THREE.NoToneMapping
@@ -104,21 +104,21 @@ export function setupThree(){
     scene.add(studioSphere);
 
     // Resize de la fenêtre en temps réel
-    window.addEventListener("resize", () => {onWindowResize(camera, renderer)});
+    window.addEventListener("resize", () => onWindowResize(renderer, composer, camera));
+    onWindowResize(renderer, composer, camera);
 
     return {scene, camera, renderer, composer}
 }
 
-function onWindowResize(camera, renderer) {
-    const canvas = renderer.domElement;
+function onWindowResize(renderer, composer, camera) {
+    const winW    = window.innerWidth;
+    const winH    = window.innerHeight;
 
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-
-    renderer.setSize(width, height);
-
-
-    camera.aspect = width / height;
+    camera.aspect = winW / winH;
     camera.updateProjectionMatrix();
 
+    renderer.setPixelRatio(window.devicePixelRatio);
+    composer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(winW, winH);
+    composer.setSize(winW, winH);
 }
