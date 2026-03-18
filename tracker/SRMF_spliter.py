@@ -1,3 +1,10 @@
+"""
+SRMF_spliter.py — Découpe des canaux de texture MetaHuman
+==========================================================
+Extrait les canaux R/G/B d'une texture SRM MetaHuman (Smoothing,
+Roughness, Metallic) en fichiers PNG séparés pour usage dans Three.js.
+"""
+
 from PIL import Image
 import os
 
@@ -13,7 +20,6 @@ r, g, b, a = img.split()
 # R = Smoothing
 # G = Roughness  
 # B = Metallic
-# A = Fluorescence (rarely needed in Three.js)
 
 r.save(os.path.join(output_dir, "teeth_Smoothing.png"))
 g.save(os.path.join(output_dir, "teeth_Roughness.png"))

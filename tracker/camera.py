@@ -1,7 +1,13 @@
+"""
+camera.py — Initialisation caméra et matrice intrinsèque
+=========================================================
+Ouvre le flux vidéo (compatible Windows/Linux/macOS) et fournit
+la matrice de caméra approximative nécessaire à solvePnP.
+"""
+
 import cv2
 import platform
 import numpy as np
-
 
 def open_camera(index=0):
     system = platform.system()
