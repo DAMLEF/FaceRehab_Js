@@ -2,8 +2,8 @@
 export function createAudioTag(soundPath, soundId){
 
     const audioTag = document.createElement("audio");
-    audioTag.setAttribute("src", stepSuccessSoundPath);
-    audioTag.setAttribute("id", stepSuccessSoundId);
+    audioTag.setAttribute("src", soundPath);
+    audioTag.setAttribute("id", soundId);
 
     audioTag.currentTime = 0;
 
