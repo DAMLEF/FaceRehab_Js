@@ -42,7 +42,9 @@ function applyBlendShapeReference(mesh, referenceMesh, blendshapeName){
  * @param {Object<string, number>} symmetricData Dictionnaire qui associe à chaque blendshapes symétrisasse de l'ARKIT
  * une valeur qui indique s'il est nécessaire de faire une symétrie. 0 = Neutre, -1 = On symétrise à partir de la partie
  * gauche du visage, 1 = On symétrise à partir de la partie droite du visage
- **/
+ *
+ * Renvoie le résultat final de ce que le profil a pris en compte comme valeurs
+ * */
 export function faceSync(faceProfile, faceData, symmetricData = {}){
 
     if(faceProfile === undefined || faceProfile === {}){
@@ -108,6 +110,7 @@ export function faceSync(faceProfile, faceData, symmetricData = {}){
                     // On applique la valeur à l'élément symétrique du visage
                     const symmetricBlendshape = faceMapping[key].linkSymmetry;
                     applyBlendShapeValue(faceMesh, symmetricBlendshape, faceData[key])
+                    finalState[symmetricBlendshape] = faceData[key]
                 }
             }
 
@@ -145,6 +148,8 @@ export function faceSync(faceProfile, faceData, symmetricData = {}){
         //headGroup.rotation.z = faceData.headRoll;  // Roll
     }
 
+
+    return finalState;
 }
 
 

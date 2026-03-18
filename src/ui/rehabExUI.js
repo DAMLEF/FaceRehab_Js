@@ -35,6 +35,9 @@ const scorePercentageTextId = "rehabExerciseScoreIndicator-PercentageText"
 /* Sound Path */
 const stepSuccessSoundId = "rehabExerciseStepSuccessSoundId";
 const stepSuccessSoundPath = "assets/sounds/step_success.wav";
+
+const skipStepSoundId = "rehabExerciseSkipStepSoundId";
+const skipStepSoundPath = "assets/sounds/skip_step.wav";
 /**/
 
 export function updateRehabExUI(currentStep, maxStep, holdBarActive, holdBarPercent, skipButtonActive, similarityScore){
@@ -181,10 +184,17 @@ function initSoundEffects(){
 
     const audioStepSuccess = createAudioTag(stepSuccessSoundPath, stepSuccessSoundId)
     rehabDiv.appendChild(audioStepSuccess);
+
+    const audioSkipStep = createAudioTag(skipStepSoundPath, skipStepSoundId);
+    rehabDiv.appendChild(audioSkipStep);
 }
 
 export function playRehabExStepSuccessSound(){
     playSound(stepSuccessSoundId);
+}
+
+export function playRehabExSkipStepSound(){
+    playSound(skipStepSoundId);
 }
 
 function initRehabExUI() {

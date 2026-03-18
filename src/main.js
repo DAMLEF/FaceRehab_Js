@@ -23,6 +23,8 @@ const appState = {
     mainFaceModel: undefined,
     secondFaceModel: undefined,
 
+    faceSyncResult: {},
+
     similarityScore: 0,
 
     rehabEx: undefined
@@ -38,10 +40,8 @@ setupControls(camera, appState);
 
 
 // Chargement du modèle de visage qui suit en temps réel les données du socket (et on le range dans appState, car asynchrone)
-loadFaceModel(scene, appState, true)
-
-// TODO : Test
-loadFaceModel(scene, appState, false)
+loadFaceModel(scene, appState, true)    // Charge le modèle dans mainFaceModel
+loadFaceModel(scene, appState, false)   // Charge le modèle dans secondFaceModel
 
 
 
@@ -94,11 +94,11 @@ function animate(){
     if(appState.secondFaceModel !== undefined && appState.mainFaceModel !== undefined){
         rehabExercise(appState);
 
-        appState.similarityScore = faceMatch(appState.latestFaceValues, appState.rehabEx.currentProfile)
+        appState.similarityScore = faceMatch(appState.faceSyncResult, appState.rehabEx.currentProfile)
     }
     
     // Modification du visage en temps réel
-    faceSync(appState.mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
+    appState.faceSyncResult = faceSync(appState.mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
 
     // Relire les valeurs finales depuis le mesh (post-symétrie)
     if (wsBridge.readyState === WebSocket.OPEN && appState.mainFaceModel?.head) {
@@ -108,11 +108,6 @@ function animate(){
         for (const [name, index] of Object.entries(mesh.morphTargetDictionary)) {
             syncedValues[name] = mesh.morphTargetInfluences[index];
         }
-
-        // Ajouter la rotation de tête
-        //syncedValues.headYaw   = appState.latestFaceValues.headYaw   ?? 0;
-        //syncedValues.headPitch = appState.latestFaceValues.headPitch ?? 0;
-        //syncedValues.headRoll  = appState.latestFaceValues.headRoll  ?? 0;
 
         wsBridge.send(JSON.stringify(syncedValues));
     }

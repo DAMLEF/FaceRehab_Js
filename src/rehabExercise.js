@@ -7,7 +7,7 @@ import sadnessBSProfile from "./data/faces/bsProfile_sadness.json"
 import surpriseBSProfile from "./data/faces/bsProfile_surprise.json"
 import disgustBSProfile from "./data/faces/bsProfile_disgust.json"
 
-import {playRehabExStepSuccessSound, updateRehabExUI} from "./ui/rehabExUI";
+import {playRehabExSkipStepSound, playRehabExStepSuccessSound, updateRehabExUI} from "./ui/rehabExUI";
 
 // Liste des visages utilisés pour les exercices
 const faceProfiles = [smileBSProfile, angryBSProfile, surpriseBSProfile, disgustBSProfile, sadnessBSProfile];
@@ -48,7 +48,6 @@ class RehabExercise{
             }
 
 
-
             if(currentTime - this.holdStart > HOLD_DURATION){
                 this.successStep();
             }
@@ -64,15 +63,21 @@ class RehabExercise{
 
 
 
-        const skipStatus = updateRehabExUI(this.currentStep + 1, STEPS_PER_EXERCISE, holdBarActive, holdBarProgress, skipActive, score*100);
+        const skipStatus = updateRehabExUI(this.currentStep + 1, STEPS_PER_EXERCISE, holdBarActive, holdBarProgress, skipActive, Math.floor(score*100));
 
         if(skipStatus){
-            this.newStep();
+            this.skipStep()
         }
     }
 
     successStep(){
         playRehabExStepSuccessSound();
+
+        this.newStep();
+    }
+
+    skipStep(){
+        playRehabExSkipStepSound()
 
         this.newStep();
     }
