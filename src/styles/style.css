@@ -25,3 +25,33 @@ body {
     font-family:monospace;
 
 }
+
+.glow{
+    /* Effet de Glow */
+    --glow-color: rgba(51, 176, 255);
+    --shadow-glow-color: rgb(3, 130, 205);
+
+    border-radius: 17px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    backdrop-filter: blur(10px);
+
+    color: white;
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-weight: 600;
+
+    font-size: 16px;
+    letter-spacing: 1px;
+
+    transition: 0.2s;
+
+
+
+    box-shadow: 0 0 15px var(--glow-color),
+    0 0 75px var(--glow-color);
+}

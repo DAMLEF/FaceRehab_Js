@@ -19,7 +19,7 @@
     /* Position vertical */
     top: 25vh;
 
-    left: 50%;
+    margin: 0 auto;
 
 }
 
@@ -30,7 +30,7 @@
     /* Position vertical de la barre*/
     top: 80vh;
 
-    left: 50%;
+    margin: 0 auto;
 
 
     width: 35%;
@@ -62,37 +62,9 @@
 
     top: 90vh;
 
-    left: 50%;
+    margin: 0 auto;
 
     padding: 8px 32px;
-
-    border-radius: 17px;
-
-    background: rgba(255, 255, 255, 0.05);
-    /*box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-*/
-    border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-    backdrop-filter: blur(10px);
-
-    color: white;
-    font-family: 'Roboto', system-ui, sans-serif;
-    font-weight: 600;
-
-    font-size: 16px;
-    letter-spacing: 1px;
-
-    transition: 0.2s;
-
-    /* Effet de Glow */
-    --glow-color: rgba(51, 176, 255);
-    --shadow-glow-color: rgb(3, 130, 205);
-
-
-    box-shadow: 0 0 15px var(--glow-color),
-    0 0 75px var(--glow-color);
 
 }
 
@@ -102,4 +74,21 @@
 
 #rehabExerciseSkipButton:active{
     background: var(--shadow-glow-color);
+}
+
+#rehabExerciseScoreIndicator{
+    position: absolute;
+
+    --glow-color: rgb(255, 99, 76);
+
+    padding: 10px 25px;
+
+    top: 50vh;
+    margin: 0 auto;
+
+    /*background: var(--glow-color);
+*/
+
+    text-align: center;
+
 }

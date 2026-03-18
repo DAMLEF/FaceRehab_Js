@@ -6,6 +6,9 @@ const stepIndicatorTemplateHTML = await fetch("src/templates/rehabExStepIndicato
 
 const skipButtonHTML = await fetch("src/templates/rehabExSkipButton.html").then(r => r.text());
 
+const scoreSectionHTML = await fetch("src/templates/rehabExScoreIndicator.html").then(r => r.text());
+
+
 const rehabExDivId = "rehabExercise";
 
 const rehabDiv = document.getElementById(rehabExDivId)
@@ -23,15 +26,23 @@ const stepIndicatorId = "rehabExerciseStepIndicator"
 const skipButtonId = "rehabExerciseSkipButton";
 let skipButtonStatus = false;
 
+/* Score Indicator */
+const scoreDivId = "rehabExerciseScoreIndicator";
+const scoreTextId = "rehabExerciseScoreIndicator-ScoreText";
+const scorePercentageTextId = "rehabExerciseScoreIndicator-PercentageText"
+/* --- */
+
 /* Sound Path */
 const stepSuccessSoundId = "rehabExerciseStepSuccessSoundId";
 const stepSuccessSoundPath = "assets/sounds/step_success.wav";
 /**/
 
-export function updateRehabExUI(currentStep, maxStep, holdBarActive, holdBarPercent, skipButtonActive){
+export function updateRehabExUI(currentStep, maxStep, holdBarActive, holdBarPercent, skipButtonActive, similarityScore){
     updateHoldBar(holdBarActive, holdBarPercent);
     updateStepIndicator(currentStep, maxStep);
     updateSkipButton(skipButtonActive);
+
+    updateScoreIndicator(similarityScore);
 
     return skipButtonStatus;
 }
@@ -80,6 +91,51 @@ function updateSkipButton(active){
     }
 }
 
+// Fonction pour convertir un score en couleur
+function scoreToColor(score) {
+    if (score === undefined || isNaN(score) || score <= 15) return 'red';
+    if (score >= 70) return 'green';
+
+    // Interpolation simple rouge → orange → jaune → vert
+    // Score 15-70%
+    let percent = (score - 15) / (70 - 15); // normalize entre 0 et 1
+
+    // On va faire un dégradé rouge → orange → yellow → green
+    // Pour simplifier, on fait un rouge -> yellow -> green approximatif en RGB
+    let r, g, b = 0;
+
+    if (percent < 0.5) {
+        // rouge → jaune
+        r = 255;
+        g = Math.round(255 * (percent / 0.5)); // 0 → 255
+    } else {
+        // jaune → vert
+        r = Math.round(255 * (1 - ((percent - 0.5) / 0.5))); // 255 → 0
+        g = 255;
+    }
+
+    return `rgb(${r},${g},0)`;
+}
+
+
+function updateScoreIndicator(similarityScore){
+    const scoreDiv = document.getElementById(scoreDivId);
+
+
+    const percentageText = document.getElementById(scorePercentageTextId);
+
+    scoreDiv.style.display = "block";
+
+    if(isNaN(similarityScore)){
+        similarityScore = 0;
+    }
+
+    percentageText.innerText = `${similarityScore} %`;
+
+    const color = scoreToColor(similarityScore);
+    scoreDiv.style.setProperty("--glow-color", color);
+}
+
 /* Action du bouton de skip d'une étape*/
 function skipButtonAction(){
     skipButtonStatus = true;
@@ -113,6 +169,14 @@ function initStepIndicator(){
 
 }
 
+function initScoreIndicator(){
+    const scoreIndicator = getHTMLTemplate(scoreSectionHTML);
+
+    rehabDiv.appendChild(scoreIndicator);
+
+    scoreIndicator.style.display = "none";
+}
+
 function initSoundEffects(){
 
     const audioStepSuccess = createAudioTag(stepSuccessSoundPath, stepSuccessSoundId)
@@ -124,8 +188,9 @@ export function playRehabExStepSuccessSound(){
 }
 
 function initRehabExUI() {
-    initStepIndicator()
-    initHoldBar()
+    initScoreIndicator();
+    initStepIndicator();
+    initHoldBar();
 
     initSkipButton();
 
