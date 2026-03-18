@@ -7,7 +7,7 @@ import sadnessBSProfile from "./data/faces/bsProfile_sadness.json"
 import surpriseBSProfile from "./data/faces/bsProfile_surprise.json"
 import disgustBSProfile from "./data/faces/bsProfile_disgust.json"
 
-import { updateRehabExUI } from "./ui/rehabExUI";
+import {playRehabExStepSuccessSound, updateRehabExUI} from "./ui/rehabExUI";
 
 // Liste des visages utilisés pour les exercices
 const faceProfiles = [smileBSProfile, angryBSProfile, surpriseBSProfile, disgustBSProfile, sadnessBSProfile];
@@ -50,7 +50,7 @@ class RehabExercise{
 
 
             if(currentTime - this.holdStart > HOLD_DURATION){
-                this.newStep();
+                this.successStep();
             }
 
             holdBarProgress = (currentTime - this.holdStart)/HOLD_DURATION;
@@ -71,7 +71,15 @@ class RehabExercise{
         }
     }
 
+    successStep(){
+        playRehabExStepSuccessSound();
+
+        this.newStep();
+    }
+
     newStep(){
+
+
         this.currentStep += 1;
         this.currentProfile = randomChoice(faceProfiles);
 

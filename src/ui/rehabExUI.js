@@ -1,4 +1,5 @@
 import {getHTMLTemplate} from "../utils/getHTMLTemplate";
+import {createAudioTag, playSound} from "../utils/soundManager";
 
 const holdBarTemplateHTML = await fetch("src/templates/rehabExHoldBar.html").then(r => r.text());
 const stepIndicatorTemplateHTML = await fetch("src/templates/rehabExStepIndicator.html").then(r => r.text());
@@ -22,6 +23,10 @@ const stepIndicatorId = "rehabExerciseStepIndicator"
 const skipButtonId = "rehabExerciseSkipButton";
 let skipButtonStatus = false;
 
+/* Sound Path */
+const stepSuccessSoundId = "rehabExerciseStepSuccessSoundId";
+const stepSuccessSoundPath = "assets/sounds/step_success.wav";
+/**/
 
 export function updateRehabExUI(currentStep, maxStep, holdBarActive, holdBarPercent, skipButtonActive){
     updateHoldBar(holdBarActive, holdBarPercent);
@@ -108,11 +113,23 @@ function initStepIndicator(){
 
 }
 
+function initSoundEffects(){
+
+    const audioStepSuccess = createAudioTag(stepSuccessSoundPath, stepSuccessSoundId)
+    rehabDiv.appendChild(audioStepSuccess);
+}
+
+export function playRehabExStepSuccessSound(){
+    playSound(stepSuccessSoundId);
+}
+
 function initRehabExUI() {
     initStepIndicator()
     initHoldBar()
 
     initSkipButton();
+
+    initSoundEffects();
 
 }
 
