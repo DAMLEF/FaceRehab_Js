@@ -94,26 +94,35 @@ function initSymSlider(){
 
 function initSymSlidersControls(){
     const leftButton = createSymSliderControl("LEFT");
+    leftButton.classList.add("blueButton");
     leftButton.addEventListener("click", () => {
         setSymSlidersToLeft();
     })
 
     const defaultButton = createSymSliderControl("DEFAULT");
+    defaultButton.classList.add("greyButton");
     defaultButton.addEventListener("click", () => {
         setSymSlidersToDefault();
     })
 
     const rightButton = createSymSliderControl("RIGHT");
+    rightButton.classList.add("redButton");
     rightButton.addEventListener("click", () => {
         setSymSlidersToRight();
     })
 
-    const saveProfile = createSymSliderControl("SAVE PROFILE");
+    const breakLineElement = document.createElement("div");
+    document.getElementById(symSlidersControlsDivId).appendChild(breakLineElement);
+    breakLineElement.style.flexBasis = "100%"
+
+    const saveProfile = createSymSliderControl("SAVE PROFILE")
+    saveProfile.classList.add("greenButton");
     saveProfile.addEventListener("click", () => {
         downloadSymProfile();
     })
 
     const loadProfile = createSymSliderControl("LOAD PROFILE");
+    loadProfile.classList.add("greyButton");
     loadProfile.addEventListener("click", () => {
         loadSymProfile();
     })

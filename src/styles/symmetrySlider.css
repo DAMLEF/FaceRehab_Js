@@ -5,15 +5,21 @@
     overflow-x: hidden;  /* empêche le scroll horizontal */
 
     height: 100vh;        /* hauteur = hauteur de la fenêtre */
-    width: 20%;
+    width: 30%;
 
-    left: 80vw;
+    left: 70vw;
 
     color:white;
     background:rgba(0,0,0,0.5);
     padding:5px;
     font-family:monospace;
 
+    text-align: center;
+
+}
+
+#symSliders h1{
+    margin-bottom: 30px;
 }
 
 .symmetrySlider {
@@ -22,7 +28,8 @@
     flex-direction: column;
     align-items: center;
 
-    margin-bottom: 30px;
+    margin-bottom: 0;
+
 }
 
 #symSlidersControls{
@@ -32,5 +39,27 @@
 
     justify-content: center;
 
+    flex-wrap: wrap;
+
+    gap: 8px 0;
+
+    margin-bottom: 30px;
+
+
+
+
+
+}
+
+.symmetrySliderControl{
+    color: white;
+
+    margin-left: 3px;
+    margin-right: 3px;
+
+    padding: 5px 6px;
+
+    border: none;
+    border-radius: 10px;
 
 }

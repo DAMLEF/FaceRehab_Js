@@ -48,7 +48,7 @@ function applyBlendShapeReference(mesh, referenceMesh, blendshapeName){
 export function faceSync(faceProfile, faceData, symmetricData = {}){
 
     if(faceProfile === undefined || faceProfile === {}){
-        return;
+        return {};
     }
 
     let finalState = {}

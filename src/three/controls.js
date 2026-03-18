@@ -23,24 +23,27 @@ export function setupControls(camera, appState){
         isMouseDown = false;
     });
 
-    document.addEventListener('mousemove', e=>{
+    if(!appState.fixPosition){
+        document.addEventListener('mousemove', e=>{
 
-        if(!isMouseDown) return;
+            if(!isMouseDown) return;
 
-        const deltaX = e.clientX - prevMouse.x;
-        const deltaY = e.clientY - prevMouse.y;
+            const deltaX = e.clientX - prevMouse.x;
+            const deltaY = e.clientY - prevMouse.y;
 
-        const qx = new THREE.Quaternion();
-        qx.setFromAxisAngle(new THREE.Vector3(1,0,0), -deltaY*rotationSpeed);
+            const qx = new THREE.Quaternion();
+            qx.setFromAxisAngle(new THREE.Vector3(1,0,0), -deltaY*rotationSpeed);
 
-        const qy = new THREE.Quaternion();
-        qy.setFromAxisAngle(new THREE.Vector3(0,1,0), -deltaX*rotationSpeed);
+            const qy = new THREE.Quaternion();
+            qy.setFromAxisAngle(new THREE.Vector3(0,1,0), -deltaX*rotationSpeed);
 
-        camera.quaternion.multiplyQuaternions(qy, camera.quaternion);
-        camera.quaternion.multiply(qx);
+            camera.quaternion.multiplyQuaternions(qy, camera.quaternion);
+            camera.quaternion.multiply(qx);
 
-        prevMouse.x = e.clientX;
-        prevMouse.y = e.clientY;
-    });
+            prevMouse.x = e.clientX;
+            prevMouse.y = e.clientY;
+        });
+    }
+
 
 }

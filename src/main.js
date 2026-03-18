@@ -27,7 +27,9 @@ const appState = {
 
     similarityScore: 0,
 
-    rehabEx: undefined
+    rehabEx: undefined,
+
+    fixPosition: true
 }
 
 // THREE Setup - Construction de la scène
@@ -36,7 +38,7 @@ document.body.appendChild(renderer.domElement)
 // ------------------------------------------------
 
 // Construction des contrôles clavier/souris
-setupControls(camera, appState);
+setupControls(camera, appState, appState.fixPosition);
 
 
 // Chargement du modèle de visage qui suit en temps réel les données du socket (et on le range dans appState, car asynchrone)
@@ -94,13 +96,17 @@ function animate(){
     if(appState.secondFaceModel !== undefined && appState.mainFaceModel !== undefined){
         rehabExercise(appState);
 
-        appState.similarityScore = faceMatch(appState.faceSyncResult, appState.rehabEx.currentProfile)
+        // TODO : Tester la symétrie pour le score
+        const faceToCompare = (appState.faceSyncResult !== undefined) ? appState.faceSyncResult : appState.latestFaceValues;
+
+        appState.similarityScore = faceMatch(faceToCompare, appState.rehabEx.currentProfile)
     }
     
     // Modification du visage en temps réel
     appState.faceSyncResult = faceSync(appState.mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
 
     // Relire les valeurs finales depuis le mesh (post-symétrie)
+    // TODO : Tester en envoyant appState.faceSyncResult
     if (wsBridge.readyState === WebSocket.OPEN && appState.mainFaceModel?.head) {
         const mesh = appState.mainFaceModel.head;
         const syncedValues = {};

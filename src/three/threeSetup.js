@@ -5,13 +5,18 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 
 function addSpotlight(scene, color, intensity, position, target, angle, penumbra, distance = 0) {
     const light = new THREE.SpotLight(color, intensity);
+
     light.position.set(...position);
     light.target.position.set(...target);
+
     light.angle = angle;
     light.penumbra = penumbra;
+
     if (distance) light.distance = distance;
+
     scene.add(light);
     scene.add(light.target);
+
     return light;
 }
 

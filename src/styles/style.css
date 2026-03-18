@@ -55,3 +55,54 @@ body {
     box-shadow: 0 0 15px var(--glow-color),
     0 0 75px var(--glow-color);
 }
+
+
+/* Gestion des boutons de couleurs */
+.blueButton{
+    background-color: #5497ff;
+}
+
+.blueButton:hover{
+    background-color: #2572f8;
+}
+
+.blueButton:active{
+    background-color: #1b57cc;
+}
+
+.redButton{
+    background-color: #d9534f;
+}
+
+.redButton:hover{
+    background-color: #d63834;
+}
+
+.redButton:active{
+    background-color: #c60801;
+}
+
+.greyButton{
+    background-color: #b6b6b6;
+}
+
+.greyButton:hover{
+    background-color: #8a8989;
+}
+
+.greyButton:active{
+    background-color: #6e6565;
+}
+
+.greenButton{
+    background-color: #5cb85c;
+}
+
+.greenButton:hover{
+    background-color: #5a8f5a;
+}
+
+.greenButton:active{
+    background-color: #3a7c3a;
+}
+.
