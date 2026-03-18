@@ -7,6 +7,7 @@ export function createAudioTag(soundPath, soundId){
 
     audioTag.currentTime = 0;
 
+
     return audioTag
 }
 
