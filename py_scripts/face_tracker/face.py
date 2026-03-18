@@ -1,3 +1,11 @@
+"""
+face.py — Estimation de pose faciale (solvePnP)
+================================================
+Fournit les utilitaires pour calculer la rotation et la position
+de la tête dans l'espace caméra à partir des landmarks MediaPipe,
+via la mise en correspondance avec un modèle 3D générique (6 points).
+"""
+
 import cv2
 import numpy as np
 

@@ -1,14 +1,8 @@
 """
-livelink_bridge.py — WebSocket → Live Link Face (Unreal Engine)
+livelink_bridge.py — WebSocket -> Live Link Face (Unreal Engine)
 ===============================================================
-Reçoit les blendshapes post-symétrie depuis main.js via WebSocket
+Reçoit les blendshapes traités depuis main.js via WebSocket
 et les envoie à Unreal via UDP en utilisant PyLiveLinkFace.
-
-Dépendances :
-    pip install websockets PyLiveLinkFace
-
-Lancement :
-    python livelink_bridge.py
 """
 
 import asyncio
@@ -29,7 +23,7 @@ UNREAL_PORT = 11111
 SUBJECT_NAME = "MediPipeFace"
 
 # ─────────────────────────────────────────────
-# Mapping camelCase (main.js) → FaceBlendShape (PyLiveLinkFace)
+# Mapping camelCase (main.js) -> FaceBlendShape (PyLiveLinkFace)
 # ─────────────────────────────────────────────
 BS_MAP = {
     "eyeBlinkLeft":        FaceBlendShape.EyeBlinkLeft,
@@ -97,7 +91,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.connect((UNREAL_IP, UNREAL_PORT))
 
 # ─────────────────────────────────────────────
-# Handler WebSocket
+# WebSocket
 # ─────────────────────────────────────────────
 async def ws_handler(websocket):
     print(f"[Bridge] main.js connecté : {websocket.remote_address}")
@@ -122,7 +116,7 @@ async def ws_handler(websocket):
 
 async def main():
     print(f"[Bridge] En écoute sur ws://{WS_HOST}:{WS_PORT}")
-    print(f"[Bridge] Transfert UDP → {UNREAL_IP}:{UNREAL_PORT}")
+    print(f"[Bridge] Transfert UDP -> {UNREAL_IP}:{UNREAL_PORT}")
     print(f"[Bridge] Sujet : {SUBJECT_NAME}")
     async with websockets.serve(ws_handler, WS_HOST, WS_PORT):
         await asyncio.Future()

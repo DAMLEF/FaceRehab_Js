@@ -1,7 +1,9 @@
 # Python
-tracker/__pycache__/
-tracker/*.py[cod]
-tracker/.venv/
+py_scripts/__pycache__/
+py_scripts/face_tracker/__pycache__/
+py_scripts/livelink/__pycache__/
+py_scripts/*.py[cod]
+py_scripts/.venv/
 
 # Node
 node_modules/

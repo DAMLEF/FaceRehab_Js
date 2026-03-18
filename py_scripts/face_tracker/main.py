@@ -1,3 +1,11 @@
+"""
+main.py — Webcam -> MediaPipe -> WebSocket
+=========================================
+Capture le visage en temps réel via MediaPipe FaceLandmarker,
+extrait les 52 blendshapes ARKit et la pose de tête (solvePnP),
+puis diffuse les données à tous les clients WebSocket connectés.
+"""
+
 import cv2
 import mediapipe as mp
 import asyncio
@@ -7,20 +15,17 @@ import threading
 import numpy as np
 import os
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "face_landmarker.task")
-
-from mediapipe.tasks.python        import vision, BaseOptions
+from mediapipe.tasks.python        import BaseOptions
 from mediapipe.tasks.python.vision import FaceLandmarker, FaceLandmarkerOptions, RunningMode
 
 from camera import open_camera, get_camera_matrix
 from face   import get_face_pose, draw_debug_axes
 
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "face_landmarker.task")
+
 # ── Caméra ───────────────────────────────────────────────────────────────────
-
-cap, W, H            = open_camera(index=0)
+cap, W, H = open_camera(index=0)
 cam_matrix, dist_coeffs = get_camera_matrix(W, H)
-
-
 
 # ── Données partagées avec le serveur WebSocket ───────────────────────────────
 face_data = {}
@@ -61,11 +66,12 @@ options = FaceLandmarkerOptions(
 
 landmarker = FaceLandmarker.create_from_options(options)
 
-
-
 # Adaptateur pour rendre les landmarks compatibles avec face.py
 class LM:
-    def __init__(self, x, y, z): self.x = x; self.y = y; self.z = z
+    def __init__(self, x, y, z): 
+        self.x = x 
+        self.y = y 
+        self.z = z
 
 # ── Main loop ─────────────────────────────────────────────────────────────────
 while cap.isOpened():
@@ -84,7 +90,7 @@ while cap.isOpened():
         lm          = result.face_landmarks[0]
         blendshapes = result.face_blendshapes[0]
 
-        # 52 blendshapes ARKit directement calibrés → dict
+        # 52 blendshapes ARKit directement calibrés -> dict
         bs = {b.category_name: float(b.score) for b in blendshapes}
         face_data.update(bs)
 
@@ -102,7 +108,7 @@ while cap.isOpened():
             face_data["headX"] = raw_x
             face_data["headY"] = raw_y
             face_data["headZ"] = raw_z
-
+            
             rot_mat, _ = cv2.Rodrigues(rvec)
             pitch = float(np.arctan2(rot_mat[2][1], rot_mat[2][2]))
             yaw   = float(np.arctan2(-rot_mat[2][0], np.sqrt(rot_mat[2][1]**2 + rot_mat[2][2]**2)))
@@ -114,14 +120,11 @@ while cap.isOpened():
 
             draw_debug_axes(debug, lm_compat, W, H, rvec, tvec, cam_matrix, dist_coeffs)
 
-        # ── Landmarks debug ───────────────────────────────────────────────────
+        # ── Landmarks afficahge debug ─────────────────────────────────────────
         for p in lm:
             cx, cy = int(p.x * W), int(p.y * H)
             cv2.circle(debug, (cx, cy), 1, (0, 255, 0), -1)
 
-        cv2.putText(debug,
-            f"jaw:{bs.get('jawOpen',0):.2f} blinkL:{bs.get('eyeBlinkLeft',0):.2f} blinkR:{bs.get('eyeBlinkRight',0):.2f}",
-            (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 255), 1)
         cv2.putText(debug, "Face tracked", (10, 30),
             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 200, 0), 2)
     else:
@@ -133,9 +136,6 @@ while cap.isOpened():
     key = cv2.waitKey(1)
     if key % 256 == 27:   # ESC
         break
-
-
-print("cc4")
 
 landmarker.close()
 cap.release()
