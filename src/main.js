@@ -134,6 +134,10 @@ ws.onclose = () => {
     console.log('WebSocket fermé')
 };
 
+wsBridge.onopen  = () => console.log('[Bridge] WebSocket :8081 connecté');
+wsBridge.onerror = (e) => console.error('[Bridge] Erreur WebSocket :8081', e);
+wsBridge.onclose = () => console.log('[Bridge] WebSocket :8081 fermé');
+
 // ---------------------------------------------------------------------------------
 
 
@@ -199,7 +203,7 @@ function animate(){
 
     }
 
-    composer.render();
+    //composer.render();
 }
 
 animate()

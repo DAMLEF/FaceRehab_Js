@@ -99,6 +99,7 @@ async def ws_handler(websocket):
 
     try:
         async for message in websocket:
+            print(f"[Bridge] reçu {len(message)} octets")
             try:
                 data = json.loads(message)
             except json.JSONDecodeError:
