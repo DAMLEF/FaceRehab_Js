@@ -63,3 +63,15 @@
     border-radius: 10px;
 
 }
+
+#loadSymProfileCustomSection{
+    position: fixed;
+
+    padding: 5px 8px;
+
+}
+
+#loadSymProfileCustomSection button{
+    font-size: 20px;
+    padding: 5px 10px;
+}

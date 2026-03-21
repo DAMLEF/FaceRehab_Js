@@ -1,0 +1,21 @@
+#LiveLinkBridgeGuide{
+    position: fixed;
+
+    left: 60vw;
+    top: 40vh;
+
+    display: none;
+
+    font-size: 18px;
+
+    padding: 20px 15px 100px;
+}
+
+#LiveLinkBridgeGuide h2{
+    margin-bottom: 3vh;
+    text-align: center;
+}
+
+#LiveLinkBridgeGuide div{
+    margin: 0 auto;
+}

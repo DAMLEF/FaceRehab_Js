@@ -11,12 +11,27 @@
     <link rel="stylesheet" href="src/styles/style.css">
 
     <link rel="stylesheet" href="src/styles/mainMenu.css">
+
     <link rel="stylesheet" href="src/styles/symmetrySlider.css">
     <link rel="stylesheet" href="src/styles/rehabExercise.css">
+    <link rel="stylesheet" href="src/styles/socketStatus.css">
+    <link rel="stylesheet" href="src/styles/liveLinkBridge.css">
 </head>
 
 <body>
-<div id="debug"></div>
+
+<div id="debug" class="uiInterface"></div>
+
+<div id="wsFaceTracker" class="wsStatus uiInterface" style="display: none">
+    <p>Face Tracker</p>
+    <div class="wsStatusText"></div>
+</div>
+
+<div id="wsLiveLinkBridge" class="wsStatus uiInterface" style="display: none">
+    <p>Live Link Bridge</p>
+    <div class="wsStatusText"></div>
+</div>
+
 
 <div id="symSliders" class="uiInterface" style="display: none">
     <h1>Symmetry Controls</h1>
@@ -25,7 +40,6 @@
 </div>
 
 <div id="rehabExercise">
-
 </div>
 
 

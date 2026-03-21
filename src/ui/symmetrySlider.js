@@ -6,6 +6,8 @@ import {closeInterface, openInterface} from "../utils/interfaceUtils";
 const symSliderTemplateHTML = await fetch("src/templates/symmetrySlider.html").then(r => r.text());
 const symSliderControlTemplateHTML = await fetch("src/templates/symmetrySliderControl.html").then(r => r.text());
 
+const loadSymProfileCustomSectionHTML = await fetch("src/templates/customLoadSymProfileSection.html").then(r => r.text());
+
 
 const symSlidersDivId = "symSliders";
 
@@ -179,6 +181,22 @@ function setSymSlidersProfile(symProfile){
 }
 
 // ----------------------------------------------------------------
+
+// Fonction pour créer un bouton de chargement de profil Custom
+export function createLoadSymProfileButton(){
+    const loadProfileCustom = getHTMLTemplate(loadSymProfileCustomSectionHTML);
+
+    const button = loadProfileCustom.getElementsByTagName("button")[0];
+
+    button.addEventListener("click", () => {
+        loadSymProfile();
+    })
+
+    document.body.appendChild(loadProfileCustom);
+
+    return loadProfileCustom;
+
+}
 
 export function openSymControlsInterface(){
     openInterface(symSlidersDivId);

@@ -9,7 +9,7 @@ import { faceMatch } from "./faceMatch";
 
 import { rehabExercise } from "./rehabExercise";
 
-import {allSymSlidersValues, openSymControlsInterface} from "./ui/symmetrySlider";
+import {allSymSlidersValues, createLoadSymProfileButton, openSymControlsInterface} from "./ui/symmetrySlider";
 
 import {
     appChoice,
@@ -22,6 +22,8 @@ import {
 
 import {updateCamera} from "./three/camera";
 import {downloadJSONFile} from "./utils/downloadFile";
+import { updateAllSocketsStatus } from "./ui/socketStatus";
+import {liveLinkBridgeDivIdGuide, openLiveLinkBridgeUI} from "./ui/liveLinkBridgeUI";
 
 // -----------------------------------------------------
 const downloadBSProfileInput = "y";
@@ -43,7 +45,10 @@ const appState = {
 
     fixPosition: true,
 
-    debugMode: false
+    debugMode: false,
+
+    faceTrackerStatus: false,
+    liveLinkBridgeStatus: false,
 }
 
 // THREE Setup - Construction de la scène
@@ -61,13 +66,31 @@ function loadApplication(){
     // Chargement du modèle de visage qui suit en temps réel les données du socket (et on le range dans appState, car asynchrone)
     loadFaceModel(scene, appState, true)    // Charge le modèle dans mainFaceModel
 
+    // Chargement du bouton spécial de chargement de boutons
+    const loadSymProfileCustomButton = createLoadSymProfileButton();
+
     if(appChoice  === REHABILITATION_CHOICE){
         loadFaceModel(scene, appState, false)   // Charge le modèle dans secondFaceModel
+
+        loadSymProfileCustomButton.style.display = "block"
+
+        loadSymProfileCustomButton.style.top = "92vh";
+        loadSymProfileCustomButton.style.left = "3vw";
+
+        document.title += " | " + REHABILITATION_CHOICE;
     }
     else if(appChoice === SYMMETRY_CONTROLS_CHOICE){
         openSymControlsInterface();
+
+        document.title += " | " + SYMMETRY_CONTROLS_CHOICE;
     }
     else if(appChoice === LIVE_LINK_CHOICE){
+        document.title += " | " + LIVE_LINK_CHOICE;
+
+        loadSymProfileCustomButton.style.display = "block"
+        openLiveLinkBridgeUI();
+
+        document.getElementById(liveLinkBridgeDivIdGuide).appendChild(loadSymProfileCustomButton)
 
     }
 
@@ -91,6 +114,8 @@ const ws = new WebSocket('ws://localhost:8080');
 const wsBridge = new WebSocket('ws://localhost:8081');
 
 ws.onopen = () => {
+    appState.faceTrackerStatus = true;
+
     console.log('WebSocket connecté');
 };
 
@@ -104,7 +129,10 @@ ws.onmessage = (event) => {
     }
 };
 
-ws.onclose = () => console.log('WebSocket fermé');
+ws.onclose = () => {
+    appState.faceTrackerStatus = false;
+    console.log('WebSocket fermé')
+};
 
 // ---------------------------------------------------------------------------------
 
@@ -118,9 +146,12 @@ function animate(){
 
     updateCamera(camera, appState)
 
-
     if(!appState.inApp && appChoice !== undefined){
         loadApplication()
+    }
+
+    if(appState.inApp){
+        updateAllSocketsStatus(appState)
     }
 
     if(appState.secondFaceModel !== undefined && appState.mainFaceModel !== undefined){

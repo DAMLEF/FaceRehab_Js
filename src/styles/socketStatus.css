@@ -1,0 +1,27 @@
+#wsFaceTracker{
+
+
+    left: 8vw;
+    top: 10vh;
+}
+
+#wsLiveLinkBridge{
+    left: 8vw;
+    top: 22vh;
+
+}
+
+.wsStatus{
+    position: fixed;
+
+    font-size: 18px;
+
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.wsStatus p{
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 2px;
+}
