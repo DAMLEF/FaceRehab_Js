@@ -1,0 +1,40 @@
+#mainMenu{
+    position: fixed;
+
+    width: 100%;
+
+    /* centre horizontalement */
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+
+}
+
+#mainMenu img{
+    position: absolute;
+
+    margin: 0 auto;
+
+    top: 25vh;
+
+}
+
+#mainMSelection{
+    position: absolute;
+
+    margin: 0 auto;
+
+    top: 65vh;
+
+
+}
+
+#mainMSelection button{
+    font-size: 25px;
+
+    padding: 10px 15px;
+
+    margin-right: 3vw;
+    margin-left: 3vw;
+}

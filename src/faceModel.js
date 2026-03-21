@@ -158,6 +158,7 @@ export function loadFaceModel(scene, appState, debug = false){
         }
         else{
             appState.secondFaceModel = faceProfile;
+            completeModel.position.set(relativePos.x + 0.5, relativePos.y, relativePos.z);
         }
 
     })

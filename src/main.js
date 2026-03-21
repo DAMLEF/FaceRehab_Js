@@ -2,23 +2,35 @@
 import { setupThree } from "./three/threeSetup";
 import { setupControls } from "./three/controls";
 
-import { loadFaceModel } from "./faceModel";
+import {loadFaceModel} from "./faceModel";
 
 import { faceSync } from "./faceSync.js"
 import { faceMatch } from "./faceMatch";
 
 import { rehabExercise } from "./rehabExercise";
 
+import {allSymSlidersValues, openSymControlsInterface} from "./ui/symmetrySlider";
 
-import {allSymSlidersValues} from "./ui/symmetrySlider";
+import {
+    appChoice,
+    closeMainMenu,
+    LIVE_LINK_CHOICE,
+    REHABILITATION_CHOICE,
+    SYMMETRY_CONTROLS_CHOICE
+} from "./ui/mainMenu";
+
+
 import {updateCamera} from "./three/camera";
 import {downloadJSONFile} from "./utils/downloadFile";
 
 // -----------------------------------------------------
+const downloadBSProfileInput = "y";
 
 const appState = {
     keys: {},
     latestFaceValues: {},
+
+    inApp: false,
 
     mainFaceModel: undefined,
     secondFaceModel: undefined,
@@ -29,7 +41,9 @@ const appState = {
 
     rehabEx: undefined,
 
-    fixPosition: true
+    fixPosition: true,
+
+    debugMode: false
 }
 
 // THREE Setup - Construction de la scène
@@ -41,12 +55,35 @@ document.body.appendChild(renderer.domElement)
 setupControls(camera, appState, appState.fixPosition);
 
 
-// Chargement du modèle de visage qui suit en temps réel les données du socket (et on le range dans appState, car asynchrone)
-loadFaceModel(scene, appState, true)    // Charge le modèle dans mainFaceModel
-loadFaceModel(scene, appState, false)   // Charge le modèle dans secondFaceModel
+function loadApplication(){
+    closeMainMenu();
+
+    // Chargement du modèle de visage qui suit en temps réel les données du socket (et on le range dans appState, car asynchrone)
+    loadFaceModel(scene, appState, true)    // Charge le modèle dans mainFaceModel
+
+    if(appChoice  === REHABILITATION_CHOICE){
+        loadFaceModel(scene, appState, false)   // Charge le modèle dans secondFaceModel
+    }
+    else if(appChoice === SYMMETRY_CONTROLS_CHOICE){
+        openSymControlsInterface();
+    }
+    else if(appChoice === LIVE_LINK_CHOICE){
+
+    }
+
+    appState.inApp = true;
+}
 
 
+function downloadBSProfile(){
+    const now = new Date();
+    const fileName = `bsProfile_${now.getTime()}.json`;
 
+    downloadJSONFile(appState.latestFaceValues, fileName)
+
+    // On annule la pression de touche pour éviter de télécharger plusieurs fichiers
+    appState.keys[downloadBSProfileInput] = false;
+}
 
 
 // Connexion au WebSocket (programme Python local (main.py dans le dossier tracker))
@@ -81,22 +118,14 @@ function animate(){
 
     updateCamera(camera, appState)
 
-    // Téléchargement en fichier des BS de la face courante
-    // TODO : Déplacer ?
-    if( appState.keys["y"]){
-        const now = new Date();
-        const fileName = `bsProfile_${now.getTime()}.json`;
 
-        downloadJSONFile(appState.latestFaceValues, fileName)
-
-        appState.keys["y"] = false;
+    if(!appState.inApp && appChoice !== undefined){
+        loadApplication()
     }
 
-    // TODO: Test
     if(appState.secondFaceModel !== undefined && appState.mainFaceModel !== undefined){
         rehabExercise(appState);
 
-        // TODO : Tester la symétrie pour le score
         const faceToCompare = (appState.faceSyncResult !== undefined) ? appState.faceSyncResult : appState.latestFaceValues;
 
         appState.similarityScore = faceMatch(faceToCompare, appState.rehabEx.currentProfile)
@@ -106,7 +135,6 @@ function animate(){
     appState.faceSyncResult = faceSync(appState.mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
 
     // Relire les valeurs finales depuis le mesh (post-symétrie)
-    // TODO : Tester en envoyant appState.faceSyncResult
     if (wsBridge.readyState === WebSocket.OPEN && appState.mainFaceModel?.head) {
         const mesh = appState.mainFaceModel.head;
         const syncedValues = {};
@@ -119,8 +147,6 @@ function animate(){
     }
 
     if(appState.secondFaceModel !== undefined){
-        // TODO: Test
-        appState.secondFaceModel.model.position.set(appState.mainFaceModel.model.position.x + 0.5, appState.mainFaceModel.model.position.y , appState.mainFaceModel.model.position.z)
 
         if(appState.rehabEx === undefined){
             faceSync(appState.secondFaceModel, {}, {})
@@ -131,8 +157,16 @@ function animate(){
 
     }
 
-    // Update debug
-    debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
+    if(appState.debugMode){
+        // Update debug
+        debug.innerText = `Camera: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`;
+
+        // Téléchargement en fichier des BS de la face courante
+        if( appState.keys[downloadBSProfileInput]){
+            downloadBSProfile()
+        }
+
+    }
 
     composer.render();
 }

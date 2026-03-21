@@ -60,25 +60,31 @@ body {
 /* Gestion des boutons de couleurs */
 .blueButton{
     background-color: #5497ff;
+    --glow-color: rgba(51, 176, 255);
 }
 
 .blueButton:hover{
     background-color: #2572f8;
+    --glow-color: rgba(37, 114, 248);
 }
 
 .blueButton:active{
     background-color: #1b57cc;
+    --glow-color: rgba(27, 87, 204);
 }
 
 .redButton{
+    --glow-color: #d9534f;
     background-color: #d9534f;
 }
 
 .redButton:hover{
+    --glow-color: #d63834;
     background-color: #d63834;
 }
 
 .redButton:active{
+    --glow-color: #c60801;
     background-color: #c60801;
 }
 
@@ -96,13 +102,16 @@ body {
 
 .greenButton{
     background-color: #5cb85c;
+    --glow-color: #5cb85c;
 }
 
 .greenButton:hover{
     background-color: #5a8f5a;
+    --glow-color: #5a8f5a;
 }
 
 .greenButton:active{
     background-color: #3a7c3a;
+    --glow-color: #3a7c3a;
 }
 .

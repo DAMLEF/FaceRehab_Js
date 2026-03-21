@@ -1,6 +1,7 @@
 import symmetricBlendshapes from '/src/config/symmetricBlendshapes.json' with { type: 'json' };
 import { getHTMLTemplate } from "../utils/getHTMLTemplate";
 import { downloadJSONFile } from "../utils/downloadFile";
+import {closeInterface, openInterface} from "../utils/interfaceUtils";
 
 const symSliderTemplateHTML = await fetch("src/templates/symmetrySlider.html").then(r => r.text());
 const symSliderControlTemplateHTML = await fetch("src/templates/symmetrySliderControl.html").then(r => r.text());
@@ -179,10 +180,20 @@ function setSymSlidersProfile(symProfile){
 
 // ----------------------------------------------------------------
 
-// Initialisation à la fin du programme
-initSymSlider();
-initSymSlidersControls();
+export function openSymControlsInterface(){
+    openInterface(symSlidersDivId);
+}
 
+// Initialisation à la fin du programme
+function initSymControls(){
+
+    initSymSlider();
+    initSymSlidersControls();
+
+    closeInterface(symSlidersDivId)
+}
+
+initSymControls();
 // Debug pour la variable globale des sliders
 // document.addEventListener('keydown', () => {
 //    console.log(allSymSliders)
