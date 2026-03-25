@@ -134,9 +134,17 @@ ws.onclose = () => {
     console.log('WebSocket fermé')
 };
 
-wsBridge.onopen  = () => console.log('[Bridge] WebSocket :8081 connecté');
+wsBridge.onopen  = () => {
+    appState.liveLinkBridgeStatus = true;
+
+    console.log('[Bridge] WebSocket :8081 connecté')
+};
 wsBridge.onerror = (e) => console.error('[Bridge] Erreur WebSocket :8081', e);
-wsBridge.onclose = () => console.log('[Bridge] WebSocket :8081 fermé');
+
+wsBridge.onclose = () => {
+    appState.liveLinkBridgeStatus = false;
+    console.log('[Bridge] WebSocket :8081 fermé');
+};
 
 // ---------------------------------------------------------------------------------
 
@@ -170,15 +178,8 @@ function animate(){
     appState.faceSyncResult = faceSync(appState.mainFaceModel, appState.latestFaceValues, allSymSlidersValues);
 
     // Relire les valeurs finales depuis le mesh (post-symétrie)
-    if (wsBridge.readyState === WebSocket.OPEN && appState.mainFaceModel?.head) {
-        const mesh = appState.mainFaceModel.head;
-        const syncedValues = {};
-
-        for (const [name, index] of Object.entries(mesh.morphTargetDictionary)) {
-            syncedValues[name] = mesh.morphTargetInfluences[index];
-        }
-
-        wsBridge.send(JSON.stringify(syncedValues));
+    if (wsBridge.readyState === WebSocket.OPEN) {
+        wsBridge.send(JSON.stringify(appState.faceSyncResult));
     }
 
     if(appState.secondFaceModel !== undefined){
@@ -203,7 +204,7 @@ function animate(){
 
     }
 
-    //composer.render();
+    composer.render();
 }
 
 animate()
