@@ -43,7 +43,7 @@ async def ws_handler(websocket):
 
 async def start_server():
     async with websockets.serve(ws_handler, "localhost", 8080):
-        print("Serveur WebSocket démarré sur ws://localhost:8765")
+        print("Serveur WebSocket démarré sur ws://localhost:8080")
         await asyncio.Future()
 
 def run_ws_server():
